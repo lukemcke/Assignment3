@@ -1,0 +1,12 @@
+<Context>
+	<Resource name="A3" 
+	url="jdbc:mysql://localhost:3306/assignment3" 
+	type="javax.sql.DataSource"
+	driverClassName="com.mysql.jdbc.Driver"
+	auth="Container"
+	maxActive="100"
+	maxIdle="30"
+	maxWait="10000"
+	username="root"
+	password="root"/>
+</Context>
