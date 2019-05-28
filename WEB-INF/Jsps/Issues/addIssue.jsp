@@ -13,14 +13,13 @@
 	<div class="heading">
 		
 	</div>
-	<% request.setAttribute("categories", Category.getCategories()); %>
 	
-<form action="Issue" Method="POST">
+<form action="assignment3" Method="POST">
 	<label for="issueTitle"> Title </label>
 	<input type="text" name="issueTitle"> <br />
 	
-	<label for="issueDescription"> Description </label>
-	<input type="text" name="issueDescription"/>
+	<label for="issueDescription"> Description </label><br />
+	<textarea name="issueDescription" rows="10" cols="30"> Enter your problem here </textarea> <br />
 	
 	<select name="category">
 		<c:forEach items="${categories}" var="category">
@@ -29,10 +28,12 @@
 	</select>
 	
 	<select name="subCategory">
-		<c:forEach items="${categories}" var="subcategory">
-		<c:if test=""
+		<c:forEach items="${subcategories}" var="sub">
+			<option value="${sub.subcategoryid}">${sub.subcategorytype}</option>
+		</c:forEach>
 	</select>
 	
+	<input type="submit" name="report" value="Report Issue"/>
 </form>
 </body>
 </html>
