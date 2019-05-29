@@ -5,7 +5,8 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.*;
+import java.text.SimpleDateFormat;
 
 @WebServlet(urlPatterns = { "/assignment3" })
 public class Servlet extends HttpServlet {
@@ -19,10 +20,11 @@ public class Servlet extends HttpServlet {
 		}
 		try {
 			request.setAttribute("categories", DA.getCategories());
+			request.setAttribute("issues", DA.getAllIssues());
 		}
 		catch(Exception ex){
 		}
-		RequestDispatcher dispather = getServletContext().getRequestDispatcher("/WEB-INF/Jsps/Issues/addIssue.jsp");
+		RequestDispatcher dispather = getServletContext().getRequestDispatcher("/WEB-INF/Jsps/Issues/viewIssues.jsp");
 		dispather.forward(request, response);
 	}
 	
@@ -42,7 +44,8 @@ public class Servlet extends HttpServlet {
 			Issue issue = new Issue();
 			issue.setTitle(Title);
 			issue.setDescription(Description);
-			issue.setDateReported(java.time.LocalDate.now().toString());
+			issue.setCategory(Category);
+			issue.setSubcategory(SubCategory);
 			
 			DA.reportIssue(issue);
 		}
