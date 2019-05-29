@@ -14,13 +14,11 @@ public class Servlet extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 	throws ServletException, IOException {
 		DataAccess DA = new DataAccess();
-		
+		try {
 		if(request.getParameter("report") != null){
 			addIssue(DA, request, response);
 		}
-		try {
 			request.setAttribute("categories", DA.getCategories());
-			request.setAttribute("subcategories", DA.getSubCategories(request.getParameter("category")));
 			request.setAttribute("issues", DA.getAllIssues());
 		}
 		catch(Exception ex){
@@ -39,8 +37,8 @@ public class Servlet extends HttpServlet {
 		try {
 			String Title = request.getParameter("issueTitle");
 			String Description = request.getParameter("issueDescription");
-			String Category = request.getParameter("Category");
-			String SubCategory = request.getParameter("SubCategory");
+			String Category = request.getParameter("category");
+			String SubCategory = request.getParameter("inputSubCategory");
 			
 			Issue issue = new Issue();
 			issue.setTitle(Title);

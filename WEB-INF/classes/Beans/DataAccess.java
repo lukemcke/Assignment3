@@ -18,35 +18,6 @@ public class DataAccess {
 		
 		return categories;
 	}
-	public static List<String> getSubCategories(String Category) throws Exception{
-		List<String> subcategories = new LinkedList<String>();
-		if(Category.equals("Network")){
-			subcategories.add("Can't connect");
-			subcategories.add("Speed");
-			subcategories.add("Constant dropouts");
-		}
-		else if(Category.equals("Software")){
-			subcategories.add("Slow to load");
-			subcategories.add("Won't load at all");
-		}
-		else if(Category.equals("Hardware")){
-			subcategories.add("Computer won't turn on");
-			subcategories.add("Computer \"blue screens\"");
-			subcategories.add("Disk drive");
-			subcategories.add("Peripherals");
-		}
-		
-		else if(Category.equals("Email")){
-			subcategories.add("Can't send");
-			subcategories.add("Can't receive");
-			subcategories.add("SPAM/Phishing");
-		}
-		else {
-			subcategories.add("Password reset");
-			subcategories.add("Wrong details");
-		}
-		return subcategories;
-	}	
 	
 	public static List<Issue> getAllIssues() throws Exception{
 		String query = "SELECT * FROM Issue";
