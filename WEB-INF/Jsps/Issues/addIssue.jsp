@@ -13,9 +13,9 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 	</head>
 <body>
-	<%@include file="master.jsp"%>
+	<%@include file="../master.jsp"%>
 	
-<form id="reportForm" action="assignment3" Method="POST">
+<form id="reportForm" action="Issue" Method="POST">
 	<label for="issueTitle"> Title </label> <br />
 	<input type="text" name="issueTitle"> <br />
 	
@@ -58,6 +58,7 @@
 		<option value="Password reset"> Password reset</option>
 		<option value="Wrong details">Wrong details</option>
 	</select>
+	<br />
 	
 	<input id="hidden" name="inputSubCategory" type="hidden" value=""/>
 	<input type="submit" name="report" value="Report Issue"/>
@@ -87,7 +88,7 @@
 			$('#account').toggle();
 			name = $("#account option:first").val();
 		}
-		$('#hidden').val(name);
+		$('#hidden').val(name)
 	});
 	
 	$('.subCat').change(function() {

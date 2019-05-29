@@ -19,6 +19,29 @@ public class DataAccess {
 		return categories;
 	}
 	
+	public static Issue getIssue(int IssueID) throws Exception{
+		String query = "SELECT * FROM Issue WHERE IssueID = "+ IssueID + "";
+		Issue issue = new Issue();
+		try(Connection connection = Config.getConnection();
+		Statement statement = connection.createStatement(); 
+		ResultSet result = statement.executeQuery(query);){ 
+			while(result.next()){ 
+				issue.setIssueID(result.getInt(1));
+				issue.setTitle(result.getString(2));
+				issue.setDescription(result.getString(3));
+				issue.setDatereported(result.getString(5));
+				issue.setStatus(result.getString(7));
+				issue.setCategory(result.getString(8));
+				issue.setSubcategory(result.getString(9));
+			}
+		}
+		catch(SQLException e){
+			System.err.println(e.getMessage());
+			System.err.println(e.getStackTrace());
+		}
+			return issue;
+	}
+	
 	public static List<Issue> getAllIssues() throws Exception{
 		String query = "SELECT * FROM Issue";
 		List<Issue> Issues = new LinkedList<>();
@@ -28,7 +51,7 @@ public class DataAccess {
 			while(result.next()){ 
 				Issue issue = new Issue();
 
-				issue.setIssueID(Integer.toString(result.getInt(1)));
+				issue.setIssueID(result.getInt(1));
 				issue.setTitle(result.getString(2));
 				issue.setDescription(result.getString(3));
 				issue.setDatereported(result.getString(5));
@@ -71,6 +94,34 @@ public class DataAccess {
 			System.err.println(e.getStackTrace());
 		}
 		
+	}
+	
+	public static List<Issue> searchIssues(String keyWord) throws Exception{
+		String query = "SELECT * FROM Issue WHERE Title LIKE '%"+ keyWord + "%' OR Description LIKE '%" + keyWord + "%' OR Category LIKE '%"+ keyWord + "%'";
+		List<Issue> Issues = new LinkedList<>();
+		try(Connection connection = Config.getConnection();
+		Statement statement = connection.createStatement(); 
+		ResultSet result = statement.executeQuery(query);){ 
+			while(result.next()){ 
+				Issue issue = new Issue();
+
+				issue.setIssueID(result.getInt(1));
+				issue.setTitle(result.getString(2));
+				issue.setDescription(result.getString(3));
+				issue.setDateresolved(result.getString(4));
+				issue.setDatereported(result.getString(5));
+				issue.setStatus(result.getString(7));
+				issue.setCategory(result.getString(8));
+				issue.setSubcategory(result.getString(9));
+				;
+				Issues.add(issue);
+			}
+		}
+		catch(SQLException e){
+			System.err.println(e.getMessage());
+			System.err.println(e.getStackTrace());
+		}
+			return Issues;
 	}
 		
 	}

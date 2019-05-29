@@ -11,7 +11,13 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 	</head>
 <body>
-<%@include file="master.jsp"%>
+<%@include file="../master.jsp"%>
+
+<form action="Issue" method="POST">
+<label for="search"> Search for key words</label>
+<input type="text" name="search" />
+<input type="submit" name="keySearch" value="Search"/>
+<br />
 <table>
 	<tr><th>IssueID</th><th>Title</th><th>Description</th>
 	<th>DateReported</th><th>Category</th><th>SubCategory</th><th>Status</th></tr>
@@ -24,9 +30,10 @@
 			<td><c:out value="${issue.category}"/></td>
 			<td><c:out value="${issue.subcategory}"/></td>
 			<td><c:out value="${issue.status}"/></td>
-			<td><a href="IssueController?<c:out value="${issue.issueID}"/>">View Issue</a> </td>
+			<td><a href="Issue?ID=<c:out value="${issue.issueID}"/>">View Issue</a> </td>
 		</tr>
 	</c:forEach>
 </table>
+</form>
 </body>
 </html>

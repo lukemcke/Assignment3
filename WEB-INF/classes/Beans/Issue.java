@@ -4,7 +4,7 @@ import java.util.*;
 import java.io.Serializable;
 
 public class Issue implements Serializable{
-	String IssueID;
+	int IssueID;
 	String Title;
 	String Description;
 	String ResolveDetails;
@@ -14,10 +14,10 @@ public class Issue implements Serializable{
 	String Category;
 	String SubCategory;
 	
-	public void setIssueID(String ID){
+	public void setIssueID(int ID){
 		this.IssueID = ID;
 	}
-	public String getIssueID(){
+	public int getIssueID(){
 		return IssueID;
 	}
 	public void setTitle(String title){
@@ -44,10 +44,10 @@ public class Issue implements Serializable{
 	public String getDatereported(){
 		return DateReported;
 	}
-	public void setDateResolved(String dateResolved){
+	public void setDateresolved(String dateResolved){
 		this.DateResolved = dateResolved;
 	}
-	public String getDateResolved(){
+	public String getDateresolved(){
 		return DateResolved;
 	}
 	public void setStatus(String status){
