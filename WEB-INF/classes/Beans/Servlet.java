@@ -20,11 +20,12 @@ public class Servlet extends HttpServlet {
 		}
 		try {
 			request.setAttribute("categories", DA.getCategories());
+			request.setAttribute("subcategories", DA.getSubCategories(request.getParameter("category")));
 			request.setAttribute("issues", DA.getAllIssues());
 		}
 		catch(Exception ex){
 		}
-		RequestDispatcher dispather = getServletContext().getRequestDispatcher("/WEB-INF/Jsps/Issues/viewIssues.jsp");
+		RequestDispatcher dispather = getServletContext().getRequestDispatcher("/WEB-INF/Jsps/Issues/addIssue.jsp");
 		dispather.forward(request, response);
 	}
 	

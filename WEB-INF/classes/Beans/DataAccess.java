@@ -8,25 +8,45 @@ import java.util.*;
 
 public class DataAccess {
 	
-	public static List<Category> getCategories() throws Exception{
-		String query = "SELECT * FROM Category";
-		List<Category> categories = new LinkedList<>();
-		try(Connection connection = Config.getConnection(); //step 1
-		Statement statement = connection.createStatement(); //step 2
-		ResultSet result = statement.executeQuery(query);){ //step 3 and 4
-			while(result.next()){ //step 5
-				Category category = new Category();
-				category.setCategoryID(Integer.toString(result.getInt(1)));
-				category.setCategoryType(result.getString(2));
-				categories.add(category);
-			}
-		}
-		catch(SQLException e){
-			System.err.println(e.getMessage());
-			System.err.println(e.getStackTrace());
-		}
+	public static List<String> getCategories() throws Exception{
+		List<String> categories = new LinkedList<String>();
+		categories.add("Network");
+		categories.add("Software");
+		categories.add("Hardware");
+		categories.add("Email");
+		categories.add("Account");
+		
 		return categories;
 	}
+	public static List<String> getSubCategories(String Category) throws Exception{
+		List<String> subcategories = new LinkedList<String>();
+		if(Category.equals("Network")){
+			subcategories.add("Can't connect");
+			subcategories.add("Speed");
+			subcategories.add("Constant dropouts");
+		}
+		else if(Category.equals("Software")){
+			subcategories.add("Slow to load");
+			subcategories.add("Won't load at all");
+		}
+		else if(Category.equals("Hardware")){
+			subcategories.add("Computer won't turn on");
+			subcategories.add("Computer \"blue screens\"");
+			subcategories.add("Disk drive");
+			subcategories.add("Peripherals");
+		}
+		
+		else if(Category.equals("Email")){
+			subcategories.add("Can't send");
+			subcategories.add("Can't receive");
+			subcategories.add("SPAM/Phishing");
+		}
+		else {
+			subcategories.add("Password reset");
+			subcategories.add("Wrong details");
+		}
+		return subcategories;
+	}	
 	
 	public static List<Issue> getAllIssues() throws Exception{
 		String query = "SELECT * FROM Issue";
@@ -55,32 +75,6 @@ public class DataAccess {
 		}
 		return Issues;
 	}
-	
-	public List<String> getSubCategories(String CategoryID) throws Exception{
-
-				Connection connection = null;
-				ResultSet rs = null;
-				PreparedStatement ps = null;
-				try {
-				connection = Config.getConnection();
-				ps = connection.prepareStatement("SELECT SubCategoryType FROM SubCategory WHERE CategoryID =?");
-				ps.setString(1, CategoryID);
-				rs = ps.executeQuery();
-				
-				List<String> subCategoryList = new ArrayList<String>();
-				while(rs.next())
-				{
-					subCategoryList.add(rs.getString("SubCategoryType"));
-				}
-				return subCategoryList;
-				
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}finally {
-				connection.close();
-			}
-			return null;
-		}
 	
 	public void reportIssue(Issue issue) throws Exception {
 		try {

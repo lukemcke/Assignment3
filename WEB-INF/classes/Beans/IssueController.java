@@ -9,7 +9,7 @@ import java.util.*;
 import java.text.SimpleDateFormat;
 
 @WebServlet(urlPatterns = { "/Issue" })
-public class Servlet extends HttpServlet {
+public class IssueController extends HttpServlet {
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 	throws ServletException, IOException {
