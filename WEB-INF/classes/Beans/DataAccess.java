@@ -8,6 +8,32 @@ import java.util.*;
 
 public class DataAccess {
 	
+	/*
+	public static List<Article> getArticles() throws Exception {
+	}
+	
+	public static Article viewArticle(int ArticleID) throws Exception {
+	}
+	
+	public static void verifyLogin(String UserName, String Password) throws Exception {
+	}
+	
+	public static void addArticle() throws Exception {
+	}
+	
+	public static boolean isAdmin(int UserID) throws Exception {
+	}
+	
+	public static List<Article> searchArticles(String keyWord) throws Exception {
+		
+	}
+	
+	public static List<Article> sortArticles(String Category) throws Exception {
+	}
+	
+	public static List<Issue> sortIssues(Date date) throws Exception {
+	}
+	*/
 	public static List<String> getCategories() throws Exception{
 		List<String> categories = new LinkedList<String>();
 		categories.add("Network");
