@@ -34,6 +34,7 @@ public class DataAccess {
 	public static List<Issue> sortIssues(Date date) throws Exception {
 	}
 	*/
+	
 	public static List<String> getCategories() throws Exception{
 		List<String> categories = new LinkedList<String>();
 		categories.add("Network");
