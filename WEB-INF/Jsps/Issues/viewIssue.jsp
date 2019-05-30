@@ -11,7 +11,7 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 	</head>
 <body>
-<%@include file="../master.jsp"%>
+<%@include file="../UserMaster.jsp"%>
 <form action="Issue" method="POST">
 <div class="container">
 	<div class="row">

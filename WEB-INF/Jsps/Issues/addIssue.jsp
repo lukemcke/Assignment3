@@ -13,7 +13,7 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 	</head>
 <body>
-	<%@include file="../master.jsp"%>
+	<%@include file="../UserMaster.jsp"%>
 	
 <form id="reportForm" action="Issue" Method="POST">
 	<label for="issueTitle"> Title </label> <br />

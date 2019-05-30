@@ -12,7 +12,7 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 </head>
 <body>
-	<%@include file="master.jsp"%>
+	<%@include file="UserMaster.jsp"%>
 	<div class="Container">
 		<h1> IT Service Portal </h1>
 	</div>
