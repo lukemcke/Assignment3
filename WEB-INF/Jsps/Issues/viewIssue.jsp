@@ -21,6 +21,8 @@
 	</div>
 	<div class="row">
 		<div class="col-xs-6">
+			<span>Issue ID </span>
+			<label name="ID" for="category"><c:out value="${issue.issueid}"/></label> <br />
 			<span>Category Type </span>
 			<label for="category"><c:out value="${issue.category}"/></label> <br />
 			<span> SubCategory </span>
@@ -38,7 +40,7 @@
 					<option> ${s} </option>
 				</c:forEach>
 			</Select>
-			<input type="submit" class="btn btn-default" name="changeStatus" value="Change Status"/>
+			<input type="submit" class="btn btn-default" name="Status" value="Change Status"/>
 		</div>
 	</div>
 </div>

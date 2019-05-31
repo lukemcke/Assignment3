@@ -27,9 +27,14 @@ public class IssueController extends HttpServlet {
 				request.setAttribute("issues", DA.searchIssues(request.getParameter("search")));
 				dispatchIssues.forward(request, response);
 			}
+		if(request.getParameter("Status") != null){
+			DA.changeStatus(request.getParameter("changeStatus"),  Integer.parseInt(request.getParameter("ID")));
+			dispatchIssues.forward(request, response);
+		}
 			
 		if(request.getParameter("ID") != null){
 			request.setAttribute("status", getStatusChanges());
+			
 			request.setAttribute("issue", DA.getIssue(Integer.parseInt(request.getParameter("ID"))));
 			RequestDispatcher dispatchIssue = getServletContext().getRequestDispatcher("/WEB-INF/Jsps/Issues/viewIssue.jsp");
 			dispatchIssue.forward(request, response);

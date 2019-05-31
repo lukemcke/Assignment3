@@ -13,10 +13,25 @@ public class Servlet extends HttpServlet {
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 	throws ServletException, IOException {
-		DataAccess DA = new DataAccess();
-
 		RequestDispatcher dispather = getServletContext().getRequestDispatcher("/WEB-INF/Jsps/Index.jsp");
+		DataAccess DA = new DataAccess();
+		
+		HttpSession userSession = request.getSession();
 		dispather.forward(request, response);
+		User user = (User) userSession.getAttribute("userLogin");
+		if(userSession.getAttribute("userLogin") != null){
+			if(user.getIsadmin()){
+				request.setAttribute("masterPage","Admin");
+			}
+			else {
+				request.setAttribute("masterPage","User");
+			}
+		}
+		else{
+			request.setAttribute("masterPage","User");
+		}
+		
+		
 	}
 	
 	public void doPost(HttpServletRequest request, HttpServletResponse response)

@@ -8,18 +8,24 @@ import java.io.Serializable;
 import java.util.*;
 import java.text.SimpleDateFormat;
 
-@WebServlet(urlPatterns = { "/assignment3" })
-public class Servlet extends HttpServlet {
+@WebServlet(urlPatterns = { "/Knowledge" })
+public class KnowledgeController extends HttpServlet {
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 	throws ServletException, IOException {
 		DataAccess DA = new DataAccess();
-		
+		//DA.addArticle();
 	}
 	
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 	throws ServletException, IOException {
 		doGet(request,response);
 	}
-	
+	public void addArticle(){
+		//String articleTitle = request.getParameter();
+		
+		//Knowledge article = new Knowledge();
+		//article.set(
+
+	}
 }

@@ -10,19 +10,18 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 </head>
 <body>
-<c:choose>
-    <c:when test="${masterPage=='User'}">
-		<%@include file="UserMaster.jsp"%>
-    </c:when>    
-    <c:otherwise>
-        <%@include file="AdminMaster.jsp"%>
-    </c:otherwise>
-</c:choose>
+<%@include file="UserMaster.jsp"%>
 	
-	<div class="Container">
-		<h1> IT Service Portal </h1>
-		<h1> ${masterPage} </h1>
-	</div>
+	
+<form action="Login" method="POST">
+		<div class="Container">
+			<label for="email"> Email </label>
+			<input name="email" type="text" />
+			<label for="passowrd"> Password </label>
+			<input name="password" type="password" />
+			<input type="Submit" name="login" value="Login" />
+		</div>
+	</form>
 </body>
 
 

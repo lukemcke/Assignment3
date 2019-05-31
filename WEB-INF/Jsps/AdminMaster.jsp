@@ -8,10 +8,9 @@
     </div>
     <ul class="nav navbar-nav">
       <li class="active"><a href="assignment3">Home</a></li>
-      <li><a href="Issue">Report An Issue</a></li>
-      <li><a href="#">View Your Issues </a></li>
+      <li><a href="#">View Issues </a></li>
       <li><a href="#">Knowledge Base </a></li>
-	  <li style="float: right"><a href="#">Login</a>
+	  <li style="float: right"><a href="Login">Login</a>
     </ul>
   </div>
 </nav>

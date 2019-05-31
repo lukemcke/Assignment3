@@ -15,8 +15,6 @@ public class DataAccess {
 	public static Article viewArticle(int ArticleID) throws Exception {
 	}
 	
-	public static void verifyLogin(String UserName, String Password) throws Exception {
-	}
 	
 	public static void addArticle() throws Exception {
 	}
@@ -34,6 +32,40 @@ public class DataAccess {
 	public static List<Issue> sortIssues(Date date) throws Exception {
 	}
 	*/
+	
+	public static int verifyLogin(String Email, String Password) throws Exception {
+		
+		Connection connection = Config.getConnection();
+		Statement statement = connection.createStatement();
+		ResultSet result = statement.executeQuery("SELECT COUNT(*) FROM UserAccount WHERE Email = "+ Email + " AND Password = " + Password + "");
+		result.next();
+		int total = result.getInt(1);
+		
+		return total;
+	}
+	
+	public static User getUser(String Email, String Password) throws Exception {
+		String query = "SELECT * FROM User WHERE Email = "+ Email + " AND Password = " + Password + "";
+		User user = new User();
+		try(Connection connection = Config.getConnection();
+		Statement statement = connection.createStatement(); 
+		ResultSet result = statement.executeQuery(query);){ 
+			while(result.next()){ 
+				user.setUserid(result.getInt(1));
+				user.setFirstname(result.getString(2));
+				user.setLastname(result.getString(3));
+				user.setEmail(result.getString(4));
+				user.setPassword(result.getString(5));
+				user.setPhone(result.getInt(6));
+				user.setIsadmin(result.getBoolean(7));
+			}
+		}
+		catch(SQLException e){
+			System.err.println(e.getMessage());
+			System.err.println(e.getStackTrace());
+		}
+			return user;
+	}
 	
 	public static List<String> getCategories() throws Exception{
 		List<String> categories = new LinkedList<String>();
@@ -149,6 +181,12 @@ public class DataAccess {
 			System.err.println(e.getStackTrace());
 		}
 			return Issues;
+	}
+	public void changeStatus(String Status, int ID) throws Exception{
+		Connection connection = Config.getConnection();
+		
+		PreparedStatement statement = connection.prepareStatement("UPDATE Issue SET Status = "+ Status + " WHERE IssueID = " + ID + "");
+		statement.executeUpdate();
 	}
 		
 	}

@@ -54,3 +54,6 @@ insert into Issue (Title, Description, ResolveDetails, DateReported, DateResolve
 			Values ("Help can't connect", "Display error when connecting", null, "2019-05-29", null, "New", "Network", "Can't Connect");
 
 SELECT * FROM Issue;
+DEletE FROM Issue;
+
+SELECT * FROM Issue WHERE Category LIKE '%Hardware%';
