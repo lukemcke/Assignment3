@@ -4,7 +4,7 @@
 
 <html>
 	<head>
-		<title>Report An Issue </title>
+		<title>View Issues </title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
@@ -18,7 +18,7 @@
 	<div class="row">
 		<div class="col-xs-4">
 			<input type="text" name="search" placeholder="Search for key words" />
-			<input type="submit" name="keySearch" value="Search"/>
+			<input type="submit" class="btn btn-default" name="keySearch" value="Search"/>
 		</div>
 		<div class="col-xs-4">
 			<select id="Cat" name="category">
@@ -28,15 +28,14 @@
 				<option value="Email"> Email </option>
 				<option value="Account"> Account </option>
 			</select>
-			<input type="submit" name="sortCat" value="Sort By Category"/>
+			<input type="submit" class="btn btn-default" name="sortCat" value="Sort By Category"/>
 		</div>
 		<div class="col-xs-4">
-			<label for="search"> Sort By Date</label>
-			<select name="dates">
+			<select name="date">
 				<option value="ASC"> Ascending </option>
 				<option value="DESC"> Decending </option>
 			</select>
-			<input type="submit" name="sortDate" value="Sort by Date"/>
+			<input type="submit" class="btn btn-default" name="sortDate" value="Sort by Date"/>
 		</div>
 	</div>
 </div>

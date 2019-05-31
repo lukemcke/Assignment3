@@ -32,7 +32,8 @@ public class IssueController extends HttpServlet {
 		}
 		
 		if(request.getParameter("keySearch") != null){
-				request.setAttribute("issues", DA.searchIssues(request.getParameter("search")));
+				request.setAttribute("issues", DA.searchIssues(user.getIsadmin(), user.getUserid(), request.getParameter("search")));
+				request.setAttribute("userissues", DA.searchIssues(user.getIsadmin(), user.getUserid(), request.getParameter("search")));
 				dispatchIssues.forward(request, response);
 			}
 		if(request.getParameter("Status") != null){
@@ -49,14 +50,19 @@ public class IssueController extends HttpServlet {
 		}
 		if(request.getParameter("sortDate") != null){
 			String date = request.getParameter("date");
-			request.setAttribute("issues", DA.sortByCategory(user.getIsadmin(), user.getUserid(), date));
-			request.setAttribute("userissues", DA.sortByCategory(user.getIsadmin(), user.getUserid(), date));
+			request.setAttribute("issues", DA.sortByDate(user.getIsadmin(), user.getUserid(), date));
+			request.setAttribute("userissues", DA.sortByDate(user.getIsadmin(), user.getUserid(), date));
+			dispatchIssues.forward(request, response);
 		}
 			
 		if(request.getParameter("ID") != null){
 			request.setAttribute("status", getStatusChanges());
 			
 			request.setAttribute("issue", DA.getIssue(Integer.parseInt(request.getParameter("ID"))));
+			//When admin clicks on view Issue changes status from new to In progress
+			if(user.getIsadmin()){
+				DA.changeStatus("In progress", Integer.parseInt(request.getParameter("ID")));
+			}
 			RequestDispatcher dispatchIssue = getServletContext().getRequestDispatcher("/WEB-INF/Jsps/Issues/viewIssue.jsp");
 			dispatchIssue.forward(request, response);
 		}
@@ -97,7 +103,6 @@ public class IssueController extends HttpServlet {
 		}
 	private List<String> getStatusChanges(){
 		List<String> status = new LinkedList<>();
-		status.add("In Progress");
 		status.add("Waiting on third party");
 		status.add("Waiting on reporter");
 		status.add("Completed");

@@ -4,7 +4,7 @@
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">IT Servicce Portal</a>
+      <a class="navbar-brand" href="#">IT Service Portal</a>
     </div>
     <ul class="nav navbar-nav">
       <li class="active"><a href="assignment3">Home</a></li>
@@ -21,14 +21,16 @@
 
 	  <c:choose>
 	  <c:when test="${sessionScope.userLogin != null}">
-			<li style="float: right"><a href="Logout">Logout</a>
-			<li>Hello, <c:out value="${userLogin.getFirstname()}"/> </li>
+			<span class="navbar-text">
+				Hello <c:out value="${userLogin.getFirstname()}"/>
+			</span>
+			<li><a href="Logout">Logout</a> </li>
 	  </c:when>
 	  <c:otherwise>
 			<li style="float: right"><a href="Login">Login</a>
 	  </c:otherwise>
 	  </c:choose>
     </ul>
-  </div>
+	</div>
 </nav>
 

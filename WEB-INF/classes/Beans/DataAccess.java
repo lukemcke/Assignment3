@@ -191,59 +191,25 @@ public class DataAccess {
 		
 	}
 	
-	public static List<Issue> searchIssues(String keyWord) throws Exception{
-		String query = "SELECT * FROM Issue WHERE Title LIKE '%"+ keyWord + "%' OR Description LIKE '%" + keyWord + "%' OR Category LIKE '%"+ keyWord + "%'";
-		List<Issue> Issues = new LinkedList<>();
-		try(Connection connection = Config.getConnection();
-		Statement statement = connection.createStatement(); 
-		ResultSet result = statement.executeQuery(query);){ 
-			while(result.next()){ 
-				Issue issue = new Issue();
-
-				issue.setIssueid(result.getInt(1));
-				issue.setTitle(result.getString(2));
-				issue.setDescription(result.getString(3));
-				issue.setDateresolved(result.getString(4));
-				issue.setDatereported(result.getString(5));
-				issue.setStatus(result.getString(7));
-				issue.setCategory(result.getString(8));
-				issue.setSubcategory(result.getString(9));
-				;
-				Issues.add(issue);
-			}
+	public List<Issue> searchIssues(boolean isAdmin, int UserID, String keyWord) throws Exception{
+		String query = "";
+		if(isAdmin){
+			query = "SELECT * FROM Issue WHERE Title LIKE '%"+ keyWord + "%' OR Description LIKE '%" + keyWord + "%' OR Category LIKE '%"+ keyWord + "%'";
 		}
-		catch(SQLException e){
-			System.err.println(e.getMessage());
-			System.err.println(e.getStackTrace());
+		else {
+			query = "SELECT * FROM Issue WHERE Title LIKE '%"+ keyWord + "%' OR Description LIKE '%" + keyWord + "%' OR Category LIKE '%"+ keyWord + "%' AND UserID = " + UserID + "";
 		}
-			return Issues;
+		
+		List<Issue> Issues = addListData(query);
+		
+		return Issues;
 	}
 	
 	public List<Issue> getNotifications(int UserID) throws Exception {
 		String query = "SELECT * FROM Issue WHERE UserID = "+ UserID + " AND Status = 'Waiting on reporter'";
-		List<Issue> Issues = new LinkedList<>();
-		try(Connection connection = Config.getConnection();
-		Statement statement = connection.createStatement(); 
-		ResultSet result = statement.executeQuery(query);){ 
-			while(result.next()){ 
-				Issue issue = new Issue();
-
-				issue.setIssueid(result.getInt(1));
-				issue.setTitle(result.getString(2));
-				issue.setDescription(result.getString(3));
-				issue.setDatereported(result.getString(5));
-				issue.setStatus(result.getString(7));
-				issue.setCategory(result.getString(8));
-				issue.setSubcategory(result.getString(9));
-				
-				Issues.add(issue);
-				
-			}
-		}
-		catch(SQLException e){
-			System.err.println(e.getMessage());
-			System.err.println(e.getStackTrace());
-		}
+		
+		List<Issue> Issues = addListData(query);
+		
 		return Issues;
 	}
 	
@@ -256,7 +222,34 @@ public class DataAccess {
 		else {
 			query =  "SELECT * FROM Issue WHERE UserID = "+ UserID + " ORDER BY Category LIKE '%" + Category + "%' DESC";
 		}
+		
+		List<Issue> Issues = addListData(query);
+		
+		return Issues;
+	}
+	
+	public List<Issue> sortByDate(boolean isAdmin, int UserID, String date) throws Exception {
+		String query = "";
+		//IF the user is admin returns all issues by a category otherwise sort issues from that specific user
+		if(isAdmin){
+			query = "SELECT * FROM Issue ORDER BY DateReported " + date + "";
+		}
+		else {
+			query =  "SELECT * FROM Issue WHERE UserID = "+ UserID + " ORDER BY DateReported " + date + "";
+		}
 
+		List<Issue> Issues = addListData(query);
+		
+		return Issues;
+	}
+	
+	public void changeStatus(String Status, int ID) throws Exception{
+		Connection connection = Config.getConnection();
+		PreparedStatement statement = connection.prepareStatement("UPDATE Issue SET Status = '"+ Status + "' WHERE IssueID = " + ID + "");
+		statement.executeUpdate();
+	}
+	
+	public List<Issue> addListData(String query) throws Exception {
 		List<Issue> Issues = new LinkedList<>();
 		try(Connection connection = Config.getConnection();
 		Statement statement = connection.createStatement(); 
@@ -282,11 +275,4 @@ public class DataAccess {
 		}
 		return Issues;
 	}
-	
-	public void changeStatus(String Status, int ID) throws Exception{
-		Connection connection = Config.getConnection();
-		PreparedStatement statement = connection.prepareStatement("UPDATE Issue SET Status = '"+ Status + "' WHERE IssueID = " + ID + "");
-		statement.executeUpdate();
-	}
-		
-	}
+}
