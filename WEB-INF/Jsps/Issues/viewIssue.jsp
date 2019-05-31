@@ -35,12 +35,15 @@
 			<c:out value="${issue.status}"/>
 		</div>
 		<div class="col-xs-6">
+		<c:if test="${userLogin.getIsadmin()}">
 			<Select id="status" name="changeStatus">
 				<c:forEach var="s" items="${status}">
 					<option> ${s} </option>
 				</c:forEach>
 			</Select>
+			<input type="hidden" name="issueID" value="<c:out value="${issue.issueid}"/>"/>
 			<input type="submit" class="btn btn-default" name="Status" value="Change Status"/>
+		</c:if>
 		</div>
 	</div>
 </div>

@@ -4,20 +4,21 @@ import java.util.*;
 import java.io.Serializable;
 
 public class Issue implements Serializable{
-	int IssueID;
-	String Title;
-	String Description;
-	String ResolveDetails;
-	String DateReported;
-	String DateResolved;
-	String Status;
-	String Category;
-	String SubCategory;
+	private int IssueID;
+	private String Title;
+	private String Description;
+	private String ResolveDetails;
+	private String DateReported;
+	private String DateResolved;
+	private String Status;
+	private String Category;
+	private String SubCategory;
+	private int UserID;
 	
-	public void setIssueID(int ID){
+	public void setIssueid(int ID){
 		this.IssueID = ID;
 	}
-	public int getIssueID(){
+	public int getIssueid(){
 		return IssueID;
 	}
 	public void setTitle(String title){
@@ -67,5 +68,11 @@ public class Issue implements Serializable{
 	}
 	public String getSubcategory(){
 		return SubCategory;
+	}
+	public void setUserid(int userid){
+		this.UserID = userid;
+	}
+	public int getUserid(){
+		return this.UserID;
 	}
 }

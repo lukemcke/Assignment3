@@ -17,9 +17,17 @@ public class IssueController extends HttpServlet {
 		DataAccess DA = new DataAccess();
 		RequestDispatcher dispatchIssues = getServletContext().getRequestDispatcher("/WEB-INF/Jsps/Issues/viewIssues.jsp");
 		
+		HttpSession userSession = request.getSession();
+		User user = (User) userSession.getAttribute("userLogin");
+		
 		if(request.getParameter("report") != null){
-			addIssue(DA, request, response);
-			request.setAttribute("issues", DA.getAllIssues());
+			addIssue(DA, user, request, response);
+			if(user.getIsadmin()){
+				request.setAttribute("issues", DA.getAllIssues());
+			}
+			else {
+				request.setAttribute("userissues", DA.getUserIssues(user.getUserid()));
+			}
 			dispatchIssues.forward(request, response);
 		}
 		
@@ -28,7 +36,8 @@ public class IssueController extends HttpServlet {
 				dispatchIssues.forward(request, response);
 			}
 		if(request.getParameter("Status") != null){
-			DA.changeStatus(request.getParameter("changeStatus"),  Integer.parseInt(request.getParameter("ID")));
+			DA.changeStatus(request.getParameter("changeStatus"),  Integer.parseInt(request.getParameter("issueID")));
+			request.setAttribute("issues", DA.getAllIssues());
 			dispatchIssues.forward(request, response);
 		}
 			
@@ -47,6 +56,7 @@ public class IssueController extends HttpServlet {
 		dispather.forward(request, response);
 		}
 		catch(Exception ex){
+			System.err.println(ex.getMessage());
 		}
 	}
 	
@@ -55,7 +65,7 @@ public class IssueController extends HttpServlet {
 		doGet(request,response);
 	}
 	
-	private void addIssue(DataAccess DA, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+	private void addIssue(DataAccess DA, User user, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		try {
 			String Title = request.getParameter("issueTitle");
 			String Description = request.getParameter("issueDescription");
@@ -67,8 +77,9 @@ public class IssueController extends HttpServlet {
 			issue.setDescription(Description);
 			issue.setCategory(Category);
 			issue.setSubcategory(SubCategory);
+			issue.setUserid(user.getUserid());
 			
-			DA.reportIssue(issue);
+			DA.reportIssue(issue, user.getUserid());
 		}
 		catch(Exception ex){
 			

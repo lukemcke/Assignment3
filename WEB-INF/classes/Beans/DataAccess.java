@@ -51,6 +51,34 @@ public class DataAccess {
 		return total == 1;
 	}
 	
+	public static List<Issue> getUserIssues(int UserID) throws Exception {
+		String query = "SELECT * FROM Issue WHERE UserID = "+ UserID + "";
+		List<Issue> Issues = new LinkedList<>();
+		try(Connection connection = Config.getConnection();
+		Statement statement = connection.createStatement(); 
+		ResultSet result = statement.executeQuery(query);){ 
+			while(result.next()){ 
+				Issue issue = new Issue();
+
+				issue.setIssueid(result.getInt(1));
+				issue.setTitle(result.getString(2));
+				issue.setDescription(result.getString(3));
+				issue.setDatereported(result.getString(5));
+				issue.setStatus(result.getString(7));
+				issue.setCategory(result.getString(8));
+				issue.setSubcategory(result.getString(9));
+				
+				Issues.add(issue);
+				
+			}
+		}
+		catch(SQLException e){
+			System.err.println(e.getMessage());
+			System.err.println(e.getStackTrace());
+		}
+		return Issues;
+	}
+	
 	public static User getUser(String Email) throws Exception {
 		String query = "SELECT * FROM UserAccount WHERE Email = '"+ Email + "'";
 		User user = new User();
@@ -92,7 +120,7 @@ public class DataAccess {
 		Statement statement = connection.createStatement(); 
 		ResultSet result = statement.executeQuery(query);){ 
 			while(result.next()){ 
-				issue.setIssueID(result.getInt(1));
+				issue.setIssueid(result.getInt(1));
 				issue.setTitle(result.getString(2));
 				issue.setDescription(result.getString(3));
 				issue.setDatereported(result.getString(5));
@@ -117,7 +145,7 @@ public class DataAccess {
 			while(result.next()){ 
 				Issue issue = new Issue();
 
-				issue.setIssueID(result.getInt(1));
+				issue.setIssueid(result.getInt(1));
 				issue.setTitle(result.getString(2));
 				issue.setDescription(result.getString(3));
 				issue.setDatereported(result.getString(5));
@@ -136,12 +164,12 @@ public class DataAccess {
 		return Issues;
 	}
 	
-	public void reportIssue(Issue issue) throws Exception {
+	public void reportIssue(Issue issue, int UserID) throws Exception {
 		try {
 			
 			Connection connection = Config.getConnection();
 			
-			PreparedStatement statement = connection.prepareStatement("INSERT INTO Issue (Title, Description, DateReported, Status, Category, SubCategory) VALUES (?,?,?,?,?,?)");
+			PreparedStatement statement = connection.prepareStatement("INSERT INTO Issue (Title, Description, DateReported, Status, Category, SubCategory, UserID) VALUES (?,?,?,?,?,?,?)");
 			
 			long now = System.currentTimeMillis();
 			java.sql.Timestamp timestamp = new java.sql.Timestamp(now);
@@ -152,6 +180,7 @@ public class DataAccess {
 			statement.setString(4, "New");
 			statement.setString(5, issue.getCategory());
 			statement.setString(6, issue.getSubcategory());
+			statement.setInt(7, UserID);
 			
 			statement.executeUpdate();
 		}
@@ -171,7 +200,7 @@ public class DataAccess {
 			while(result.next()){ 
 				Issue issue = new Issue();
 
-				issue.setIssueID(result.getInt(1));
+				issue.setIssueid(result.getInt(1));
 				issue.setTitle(result.getString(2));
 				issue.setDescription(result.getString(3));
 				issue.setDateresolved(result.getString(4));
@@ -192,7 +221,7 @@ public class DataAccess {
 	public void changeStatus(String Status, int ID) throws Exception{
 		Connection connection = Config.getConnection();
 		
-		PreparedStatement statement = connection.prepareStatement("UPDATE Issue SET Status = "+ Status + " WHERE IssueID = " + ID + "");
+		PreparedStatement statement = connection.prepareStatement("UPDATE Issue SET Status = '"+ Status + "' WHERE IssueID = " + ID + "");
 		statement.executeUpdate();
 	}
 		

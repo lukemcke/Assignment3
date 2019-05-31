@@ -18,21 +18,45 @@
 <input type="text" name="search" />
 <input type="submit" name="keySearch" value="Search"/>
 <br />
-<table>
+<c:choose>
+	<c:when test="${userLogin.getIsadmin()}">
+	<table>
 	<tr><th>IssueID</th><th>Title</th><th>Description</th>
 	<th>DateReported</th><th>Category</th><th>SubCategory</th><th>Status</th></tr>
 	<c:forEach var="issue" items="${issues}">
 		<tr>
-			<td><c:out value="${issue.issueID}"/></td>
+			<td><c:out value="${issue.issueid}"/></td>
 			<td><c:out value="${issue.title}"/></td>
 			<td><c:out value="${issue.description}"/></td>
 			<td><c:out value="${issue.datereported}"/></td>
 			<td><c:out value="${issue.category}"/></td>
 			<td><c:out value="${issue.subcategory}"/></td>
 			<td><c:out value="${issue.status}"/></td>
-			<td><a href="Issue?ID=<c:out value="${issue.issueID}"/>">View Issue</a> </td>
+			<td><a href="Issue?ID=<c:out value="${issue.issueid}"/>">View Issue</a> </td>
 		</tr>
 	</c:forEach>
+	</table>
+	</c:when>
+	<c:otherwise>
+	<table>
+		<tr><th>IssueID</th><th>Title</th><th>Description</th>
+	<th>DateReported</th><th>Category</th><th>SubCategory</th><th>Status</th></tr>
+	<c:forEach var="issue" items="${userissues}">
+		<tr>
+			<td><c:out value="${issue.issueid}"/></td>
+			<td><c:out value="${issue.title}"/></td>
+			<td><c:out value="${issue.description}"/></td>
+			<td><c:out value="${issue.datereported}"/></td>
+			<td><c:out value="${issue.category}"/></td>
+			<td><c:out value="${issue.subcategory}"/></td>
+			<td><c:out value="${issue.status}"/></td>
+			<td><a href="Issue?ID=<c:out value="${issue.issueid}"/>">View Issue</a> </td>
+		</tr>
+	</c:forEach>
+	</table>
+	</c:otherwise>
+	
+	</c:choose>
 </table>
 </form>
 </body>
