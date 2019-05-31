@@ -40,6 +40,18 @@ public class IssueController extends HttpServlet {
 			request.setAttribute("issues", DA.getAllIssues());
 			dispatchIssues.forward(request, response);
 		}
+		
+		if(request.getParameter("sortCat") != null){
+			String category = request.getParameter("category");
+			request.setAttribute("issues", DA.sortByCategory(user.getIsadmin(), user.getUserid(), category));
+			request.setAttribute("userissues", DA.sortByCategory(user.getIsadmin(), user.getUserid(), category));
+			dispatchIssues.forward(request, response);
+		}
+		if(request.getParameter("sortDate") != null){
+			String date = request.getParameter("date");
+			request.setAttribute("issues", DA.sortByCategory(user.getIsadmin(), user.getUserid(), date));
+			request.setAttribute("userissues", DA.sortByCategory(user.getIsadmin(), user.getUserid(), date));
+		}
 			
 		if(request.getParameter("ID") != null){
 			request.setAttribute("status", getStatusChanges());
@@ -48,8 +60,6 @@ public class IssueController extends HttpServlet {
 			RequestDispatcher dispatchIssue = getServletContext().getRequestDispatcher("/WEB-INF/Jsps/Issues/viewIssue.jsp");
 			dispatchIssue.forward(request, response);
 		}
-		
-		
 		
 		request.setAttribute("categories", DA.getCategories());
 		RequestDispatcher dispather = getServletContext().getRequestDispatcher("/WEB-INF/Jsps/Issues/addIssue.jsp");
@@ -82,7 +92,7 @@ public class IssueController extends HttpServlet {
 			DA.reportIssue(issue, user.getUserid());
 		}
 		catch(Exception ex){
-			
+			System.err.println(ex.getMessage());
 			}
 		}
 	private List<String> getStatusChanges(){
@@ -91,8 +101,6 @@ public class IssueController extends HttpServlet {
 		status.add("Waiting on third party");
 		status.add("Waiting on reporter");
 		status.add("Completed");
-		status.add("Not Accepted");
-		status.add("Resolved");
 		
 		return status;
 	}

@@ -247,6 +247,42 @@ public class DataAccess {
 		return Issues;
 	}
 	
+	public List<Issue> sortByCategory(boolean isAdmin, int UserID, String Category) throws Exception {
+		String query = "";
+		//IF the user is admin returns all issues by a category otherwise sort issues from that specific user
+		if(isAdmin){
+			query = "SELECT * FROM Issue ORDER BY Category LIKE '%" + Category + "%' DESC";
+		}
+		else {
+			query =  "SELECT * FROM Issue WHERE UserID = "+ UserID + " ORDER BY Category LIKE '%" + Category + "%' DESC";
+		}
+
+		List<Issue> Issues = new LinkedList<>();
+		try(Connection connection = Config.getConnection();
+		Statement statement = connection.createStatement(); 
+		ResultSet result = statement.executeQuery(query);){ 
+			while(result.next()){ 
+				Issue issue = new Issue();
+
+				issue.setIssueid(result.getInt(1));
+				issue.setTitle(result.getString(2));
+				issue.setDescription(result.getString(3));
+				issue.setDatereported(result.getString(5));
+				issue.setStatus(result.getString(7));
+				issue.setCategory(result.getString(8));
+				issue.setSubcategory(result.getString(9));
+				
+				Issues.add(issue);
+				
+			}
+		}
+		catch(SQLException e){
+			System.err.println(e.getMessage());
+			System.err.println(e.getStackTrace());
+		}
+		return Issues;
+	}
+	
 	public void changeStatus(String Status, int ID) throws Exception{
 		Connection connection = Config.getConnection();
 		PreparedStatement statement = connection.prepareStatement("UPDATE Issue SET Status = '"+ Status + "' WHERE IssueID = " + ID + "");

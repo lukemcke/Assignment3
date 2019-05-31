@@ -14,15 +14,40 @@
 <%@include file="../UserMaster.jsp"%>
 
 <form action="Issue" method="POST">
-<label for="search"> Search for key words</label>
-<input type="text" name="search" />
-<input type="submit" name="keySearch" value="Search"/>
+<div class="container">
+	<div class="row">
+		<div class="col-xs-4">
+			<input type="text" name="search" placeholder="Search for key words" />
+			<input type="submit" name="keySearch" value="Search"/>
+		</div>
+		<div class="col-xs-4">
+			<select id="Cat" name="category">
+				<option value="Network"> Network </option>
+				<option value="Software"> Software </option>
+				<option value="Hardware"> Hardware </option>
+				<option value="Email"> Email </option>
+				<option value="Account"> Account </option>
+			</select>
+			<input type="submit" name="sortCat" value="Sort By Category"/>
+		</div>
+		<div class="col-xs-4">
+			<label for="search"> Sort By Date</label>
+			<select name="dates">
+				<option value="ASC"> Ascending </option>
+				<option value="DESC"> Decending </option>
+			</select>
+			<input type="submit" name="sortDate" value="Sort by Date"/>
+		</div>
+	</div>
+</div>
 <br />
+
+
 <c:choose>
 	<c:when test="${userLogin.getIsadmin()}">
-	<table>
-	<tr><th>IssueID</th><th>Title</th><th>Description</th>
-	<th>DateReported</th><th>Category</th><th>SubCategory</th><th>Status</th></tr>
+	<table class="table">
+	<tr><th scope="col">IssueID</th><th scope="col">Title</th><th scope="col">Description</th>
+	<th scope="col">DateReported</th><th scope="col">Category</th><th scope="col">SubCategory</th><th scope="col">Status</th></tr>
 	<c:forEach var="issue" items="${issues}">
 		<tr>
 			<td><c:out value="${issue.issueid}"/></td>
@@ -38,7 +63,7 @@
 	</table>
 	</c:when>
 	<c:otherwise>
-	<table>
+	<table class="table">
 		<tr><th>IssueID</th><th>Title</th><th>Description</th>
 	<th>DateReported</th><th>Category</th><th>SubCategory</th><th>Status</th></tr>
 	<c:forEach var="issue" items="${userissues}">
