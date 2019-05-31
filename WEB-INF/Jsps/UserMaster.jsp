@@ -8,14 +8,21 @@
     </div>
     <ul class="nav navbar-nav">
       <li class="active"><a href="assignment3">Home</a></li>
-      <li><a href="Issue">Report An Issue</a></li>
-      <li><a href="Issue">View Your Issues </a></li>
-      <li><a href="#">Knowledge Base </a></li>
+	  <c:choose>
+		<c:when test="${sessionScope.userLogin == null || not userLogin.getIsadmin()}">
+			<li><a href="Issue">Report An Issue</a></li>
+			<li><a href="Issue">View Your Issues </a></li>
+		</c:when>
+		<c:otherwise>
+			<li><a href="Issue">View All Issues </a></li>
+		</c:otherwise>
+	  </c:choose>
+	  <li><a href="#">Knowledge Base </a></li>
 
 	  <c:choose>
 	  <c:when test="${sessionScope.userLogin != null}">
-			<li>Hello, <c:out value="${userLogin.getFirstname()}"/> </li>
 			<li style="float: right"><a href="Logout">Logout</a>
+			<li>Hello, <c:out value="${userLogin.getFirstname()}"/> </li>
 	  </c:when>
 	  <c:otherwise>
 			<li style="float: right"><a href="Login">Login</a>
