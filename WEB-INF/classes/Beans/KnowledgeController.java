@@ -8,8 +8,8 @@ import java.io.Serializable;
 import java.util.*;
 import java.text.SimpleDateFormat;
 
-@WebServlet(urlPatterns = { "/assignment3" })
-public class Servlet extends HttpServlet {
+@WebServlet(urlPatterns = { "/knowledgebase" })
+public class KnowledgeController extends HttpServlet {
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 	throws ServletException, IOException {
