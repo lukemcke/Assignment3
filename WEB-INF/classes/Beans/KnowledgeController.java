@@ -8,7 +8,11 @@ import java.io.Serializable;
 import java.util.*;
 import java.text.SimpleDateFormat;
 
+<<<<<<< HEAD
 @WebServlet(urlPatterns = { "/Knowledge" })
+=======
+@WebServlet(urlPatterns = { "/knowledgebase" })
+>>>>>>> 0a1b6ba472d4df8ebcd06244030127eeb73bc7b3
 public class KnowledgeController extends HttpServlet {
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
