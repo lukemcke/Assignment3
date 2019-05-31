@@ -23,7 +23,7 @@
 	<textarea name="issueDescription" rows="5" cols="30" placeholder="Enter your problem here"></textarea> <br />
 	
 	<select id="Cat" name="category">
-		<option> Select A Category </option>
+		<option id="select"> Select A Category </option>
 		<c:forEach items="${categories}" var="category">
 			<option value="${category}">${category}</option>
 		</c:forEach>
@@ -68,6 +68,7 @@
 	var name = "";
 	$('#Cat').change( function() {
 		$('.subCat').hide();
+		$('#select').remove();
 		if(this.value == "Network"){
 			$('#network').show();
 			name = $("#network option:first").val();

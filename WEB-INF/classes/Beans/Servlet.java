@@ -17,17 +17,19 @@ public class Servlet extends HttpServlet {
 		DataAccess DA = new DataAccess();
 		
 		HttpSession userSession = request.getSession();
-		dispather.forward(request, response);
 		User user = (User) userSession.getAttribute("userLogin");
 		
-		request.setAttribute("userLogin", user);
-		
-			if(user.getIsadmin()){
-				request.setAttribute("masterPage","Admin");
+		try {
+			if(request.getParameter("notify") != null){
+				DA.changeStatus(request.getParameter("status"), Integer.parseInt(request.getParameter("ID")));
 			}
-			else {
-				request.setAttribute("masterPage","User");
-			}
+			request.setAttribute("notifications", DA.getNotifications(user.getUserid()));
+		}
+		catch(Exception ex){
+			System.err.println(ex.getMessage());
+			System.err.println(ex.getStackTrace());
+		}
+		dispather.forward(request, response);
 		
 		
 	}

@@ -11,9 +11,46 @@
 </head>
 <body>
 	<%@include file="UserMaster.jsp"%>
+	
+	<form action="assignment3" method="POST">
+
+	<c:choose>
+		<c:when test="${empty notifications}">
+			<div class="bg-success">
+				<span> You have no notifications </span>
+			</div>
+		</c:when>
+		<c:otherwise>
+		<div class="bg-danger">
+			<h2> Notifications </h2>
+			<table>
+			<tr><th> Title </th> <th> Category </th> <th> Sub Category </th> <th> date reported </th><th> Issue fixed?</tr>
+			<c:forEach var="notif" items="${notifications}">
+				<tr>
+					<td><c:out value="${notif.title}"/></td>
+					<td><c:out value="${notif.category}"/></td>
+					<td><c:out value="${notif.subcategory}"/></td>
+					<td><c:out value="${notif.datereported}"/></td>
+					<td> <select id="option"> <option id="select"> Select option </option> <option value="Resolved"> Accept </option> <option value ="Not accepted"> Decline </option> </select> </td>
+					<td> <input type="Submit" name="notify" value="Submit"/></td>
+				</tr>
+				<input id="ID" name="ID" type="hidden" value="<c:out value="${notif.issueid}"/>"/>
+			</c:forEach>
+			</table>
+		</c:otherwise>
+	</c:choose>
+	</div>
+	<input id="hidden" name="status" type="hidden" value=""/>
+	</form>
 	<div class="Container">
 		<h1> IT Service Portal </h1>
 	</div>
+	<script>
+		$('#option').change( function() {
+			$('#select').remove();
+			$('#hidden').val(this.value);
+		});
+	</script>
 </body>
 
 

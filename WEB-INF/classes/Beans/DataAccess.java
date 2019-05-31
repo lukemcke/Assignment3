@@ -218,9 +218,37 @@ public class DataAccess {
 		}
 			return Issues;
 	}
+	
+	public List<Issue> getNotifications(int UserID) throws Exception {
+		String query = "SELECT * FROM Issue WHERE UserID = "+ UserID + " AND Status = 'Waiting on reporter'";
+		List<Issue> Issues = new LinkedList<>();
+		try(Connection connection = Config.getConnection();
+		Statement statement = connection.createStatement(); 
+		ResultSet result = statement.executeQuery(query);){ 
+			while(result.next()){ 
+				Issue issue = new Issue();
+
+				issue.setIssueid(result.getInt(1));
+				issue.setTitle(result.getString(2));
+				issue.setDescription(result.getString(3));
+				issue.setDatereported(result.getString(5));
+				issue.setStatus(result.getString(7));
+				issue.setCategory(result.getString(8));
+				issue.setSubcategory(result.getString(9));
+				
+				Issues.add(issue);
+				
+			}
+		}
+		catch(SQLException e){
+			System.err.println(e.getMessage());
+			System.err.println(e.getStackTrace());
+		}
+		return Issues;
+	}
+	
 	public void changeStatus(String Status, int ID) throws Exception{
 		Connection connection = Config.getConnection();
-		
 		PreparedStatement statement = connection.prepareStatement("UPDATE Issue SET Status = '"+ Status + "' WHERE IssueID = " + ID + "");
 		statement.executeUpdate();
 	}
