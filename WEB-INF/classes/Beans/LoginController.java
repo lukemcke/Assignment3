@@ -22,9 +22,9 @@ public class LoginController extends HttpServlet {
 			
 		if(request.getParameter("login") != null) {
 			
-				if(DA.verifyLogin(request.getParameter("email"), request.getParameter("password")) == 1)
+				if(DA.verifyLogin(request.getParameter("email"), request.getParameter("password")))
 				{
-					session.setAttribute("userLogin", DA.getUser(request.getParameter("email"), request.getParameter("password")));
+					session.setAttribute("userLogin", DA.getUser(request.getParameter("email")));
 					dispatchIndex.forward(request, response);
 				}
 					

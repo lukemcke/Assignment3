@@ -19,17 +19,15 @@ public class Servlet extends HttpServlet {
 		HttpSession userSession = request.getSession();
 		dispather.forward(request, response);
 		User user = (User) userSession.getAttribute("userLogin");
-		if(userSession.getAttribute("userLogin") != null){
+		
+		request.setAttribute("userLogin", user);
+		
 			if(user.getIsadmin()){
 				request.setAttribute("masterPage","Admin");
 			}
 			else {
 				request.setAttribute("masterPage","User");
 			}
-		}
-		else{
-			request.setAttribute("masterPage","User");
-		}
 		
 		
 	}

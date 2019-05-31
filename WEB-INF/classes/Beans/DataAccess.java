@@ -33,19 +33,26 @@ public class DataAccess {
 	}
 	*/
 	
-	public static int verifyLogin(String Email, String Password) throws Exception {
+	public static boolean verifyLogin(String Email, String Password) throws Exception {
 		
-		Connection connection = Config.getConnection();
-		Statement statement = connection.createStatement();
-		ResultSet result = statement.executeQuery("SELECT COUNT(*) FROM UserAccount WHERE Email = "+ Email + " AND Password = " + Password + "");
-		result.next();
-		int total = result.getInt(1);
+		int total = 0;
+		try {
+			Connection connection = Config.getConnection();
+			Statement statement = connection.createStatement();
+			ResultSet result = statement.executeQuery("SELECT COUNT(*) FROM UserAccount WHERE Email = '"+ Email + "' AND Password = '" + Password + "'");
+			result.next();
+			total = result.getInt(1);
+		}
+		catch(SQLException e){
+			System.err.println(e.getMessage());
+			System.err.println(e.getStackTrace());
+		}
 		
-		return total;
+		return total == 1;
 	}
 	
-	public static User getUser(String Email, String Password) throws Exception {
-		String query = "SELECT * FROM User WHERE Email = "+ Email + " AND Password = " + Password + "";
+	public static User getUser(String Email) throws Exception {
+		String query = "SELECT * FROM UserAccount WHERE Email = '"+ Email + "'";
 		User user = new User();
 		try(Connection connection = Config.getConnection();
 		Statement statement = connection.createStatement(); 
@@ -55,8 +62,8 @@ public class DataAccess {
 				user.setFirstname(result.getString(2));
 				user.setLastname(result.getString(3));
 				user.setEmail(result.getString(4));
-				user.setPassword(result.getString(5));
-				user.setPhone(result.getInt(6));
+				user.setPhone(result.getInt(5));
+				user.setPassword(result.getString(6));
 				user.setIsadmin(result.getBoolean(7));
 			}
 		}

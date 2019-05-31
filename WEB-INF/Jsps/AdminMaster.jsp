@@ -10,7 +10,15 @@
       <li class="active"><a href="assignment3">Home</a></li>
       <li><a href="#">View Issues </a></li>
       <li><a href="#">Knowledge Base </a></li>
-	  <li style="float: right"><a href="Login">Login</a>
+	  <c:choose>
+	  <c:when test="${empty sessionScope['userLogin']}">
+			<li style="float: right"><a href="Logout">Logout</a>
+	  </c:when>
+	  <c:otherwise>
+			<li style="float: right"><a href="Login">Login</a>
+	  </c:otherwise>
+	  </c:choose>
+	  
     </ul>
   </div>
 </nav>

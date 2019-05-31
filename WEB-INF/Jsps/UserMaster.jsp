@@ -9,16 +9,18 @@
     <ul class="nav navbar-nav">
       <li class="active"><a href="assignment3">Home</a></li>
       <li><a href="Issue">Report An Issue</a></li>
-<<<<<<< HEAD
       <li><a href="Issue">View Your Issues </a></li>
       <li><a href="#">Knowledge Base </a></li>
 
-	  <li style="float: right"><a href="Login">Login</a>
-=======
-      <li><a href="#">View Your Issues </a></li>
-      <li><a href="knowledgebase">Knowledge Base </a></li>
-	  <li style="float: right"><a href="#">Login</a>
->>>>>>> 0a1b6ba472d4df8ebcd06244030127eeb73bc7b3
+	  <c:choose>
+	  <c:when test="${sessionScope.userLogin != null}">
+			<li>Hello, <c:out value="${userLogin.getFirstname()}"/> </li>
+			<li style="float: right"><a href="Logout">Logout</a>
+	  </c:when>
+	  <c:otherwise>
+			<li style="float: right"><a href="Login">Login</a>
+	  </c:otherwise>
+	  </c:choose>
     </ul>
   </div>
 </nav>
