@@ -22,6 +22,7 @@ public class viewIssueController extends HttpServlet {
 		HttpSession userSession = request.getSession();
 		User user = (User) userSession.getAttribute("userLogin");
 		
+		//Add comment then returns back to view issues
 		if(request.getParameter("addComment") != null){
 				addComment(DA, request, response);
 				setArrtibutes(DA, request, response);

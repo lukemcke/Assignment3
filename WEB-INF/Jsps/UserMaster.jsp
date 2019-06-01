@@ -11,13 +11,13 @@
 	  <c:choose>
 		<c:when test="${sessionScope.userLogin == null || not userLogin.getIsadmin()}">
 			<li><a href="Issue">Report An Issue</a></li>
-			<li><a href="vieIssue">View Your Issues </a></li>
+			<li><a href="viewIssue">View Your Issues </a></li>
 		</c:when>
 		<c:otherwise>
-			<li><a href="Issue">View All Issues </a></li>
+			<li><a href="viewIssue">View All Issues </a></li>
 		</c:otherwise>
 	  </c:choose>
-	  <li><a href="#">Knowledge Base </a></li>
+	  <li><a href="Knowledge">Knowledge Base </a></li>
 
 	  <c:choose>
 	  <c:when test="${sessionScope.userLogin != null}">

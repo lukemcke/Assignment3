@@ -1,0 +1,43 @@
+package Beans;
+import javax.sql.*;
+import java.util.*;
+import java.io.Serializable;
+
+public class Knowledge implements Serializable{
+	private int ArticleID;
+	private String OriginalIssue;
+	private String Description;
+	private String ResolveDetails;
+	private String DateSolved;
+	
+	public void setArticleid(int articleID){
+		this.ArticleID = articleID;
+	}
+	public int getArticleid(){
+		return this.ArticleID;
+	}
+	public void setOriginalissue(String originalissue){
+		this.OriginalIssue = originalissue;
+	}
+	public String getOriginalissue(){
+		return this.OriginalIssue;
+	}
+	public void setDescription(String description){
+		this.Description = description;
+	}
+	public String getDescription(){
+		return this.Description;
+	}
+	public void setResolvedetails(String resolvedetails){
+		this.ResolveDetails = resolvedetails;
+	}
+	public String getResolvedetails(){
+		return this.ResolveDetails;
+	}
+	public void setDatesolved(String datesolved){
+		this.DateSolved = datesolved;
+	}
+	public String getDatesolved(){
+		return this.DateSolved;
+	}
+}

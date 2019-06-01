@@ -9,15 +9,7 @@ import java.util.*;
 public class DataAccess {
 	
 	/*
-	public static List<Article> getArticles() throws Exception {
-	}
 	
-	public static Article viewArticle(int ArticleID) throws Exception {
-	}
-	
-	
-	public static void addArticle() throws Exception {
-	}
 	
 	public static List<Article> searchArticles(String keyWord) throws Exception {
 		
@@ -131,6 +123,32 @@ public class DataAccess {
 			return issue;
 	}
 	
+	public static List<Knowledge> getAllArticles() throws Exception{
+		String query = "SELECT * FROM Knowledge";
+		List<Knowledge> articles = new LinkedList<>();
+		try(Connection connection = Config.getConnection();
+		Statement statement = connection.createStatement(); 
+		ResultSet result = statement.executeQuery(query);){ 
+			while(result.next()){ 
+				Knowledge article = new Knowledge();
+
+				article.setArticleid(result.getInt(1));
+				article.setOriginalissue(result.getString(2));
+				article.setDescription(result.getString(3));
+				article.setResolvedetails(result.getString(4));
+				article.setDatesolved(result.getString(5));
+				
+				articles.add(article);
+				
+			}
+		}
+		catch(SQLException e){
+			System.err.println(e.getMessage());
+			System.err.println(e.getStackTrace());
+		}
+		return articles;
+	}
+	
 	public static List<Issue> getAllIssues() throws Exception{
 		String query = "SELECT * FROM Issue";
 		List<Issue> Issues = new LinkedList<>();
@@ -164,7 +182,7 @@ public class DataAccess {
 			
 			Connection connection = Config.getConnection();
 			
-			PreparedStatement statement = connection.prepareStatement("INSERT INTO Issue (Title, Description, DateReported, Status, Category, SubCategory, UserID) VALUES (?,?,?,?,?,?,?)");
+			PreparedStatement statement = connection.prepareStatement("INSERT INTO Issue (Title, Description, DateReported, Status, Category, SubCategory, UserID, IsArticle) VALUES (?,?,?,?,?,?,?,?)");
 			
 			long now = System.currentTimeMillis();
 			java.sql.Timestamp timestamp = new java.sql.Timestamp(now);
@@ -176,6 +194,7 @@ public class DataAccess {
 			statement.setString(5, issue.getCategory());
 			statement.setString(6, issue.getSubcategory());
 			statement.setInt(7, UserID);
+			statement.setBoolean(8, false);
 			
 			statement.executeUpdate();
 		}
@@ -184,6 +203,28 @@ public class DataAccess {
 			System.err.println(e.getStackTrace());
 		}
 		
+	}
+	
+	public void addArticle(Issue issue) throws Exception {
+		Connection connection = Config.getConnection();
+		
+		try {
+			PreparedStatement statement = connection.prepareStatement("INSERT INTO KnowledgeBase (Originalssue, Description, ResolveDetails, DateSolved) VALUES (?,?,?,?)");
+			PreparedStatement changeStatement = connection.prepareStatement("UPDATE Issue SET IsArticle = true WHERE IssueID = " + issue.getIssueid() + "");
+			
+			statement.setString(1, issue.getTitle());
+			statement.setString(2, issue.getDescription());
+			statement.setString(3, issue.getResolvedetails());
+			statement.setString(4, issue.getDateresolved());
+			
+			changeStatement.executeUpdate();
+			statement.executeUpdate();
+		}
+		catch(SQLException e){
+			System.err.println(e.getMessage());
+			System.err.println(e.getStackTrace());
+		}
+			
 	}
 	
 	public List<Issue> searchIssues(boolean isAdmin, int UserID, String keyWord) throws Exception{
@@ -200,8 +241,22 @@ public class DataAccess {
 		return Issues;
 	}
 	
-	public List<Issue> getNotifications(int UserID) throws Exception {
-		String query = "SELECT * FROM Issue WHERE UserID = "+ UserID + " AND Status = 'Waiting on reporter'";
+	public List<Issue> listIssues() throws Exception{
+		String query = "SELECT * FROM Issue WHERE Status = 'Completed' OR Status = 'Resolved' AND IsArticle = false";
+		
+		List<Issue> Issues = addListData(query);
+		
+		return Issues;
+	}
+	
+	public List<Issue> getNotifications(int UserID, boolean isAdmin) throws Exception {
+		String query = "";
+		if(isAdmin){
+			query = "SELECT * FROM Issue WHERE Status = 'Not accepted'";
+		}
+		else {
+			query = "SELECT * FROM Issue WHERE UserID = "+ UserID + " AND Status = 'Waiting on reporter'";
+		}
 		
 		List<Issue> Issues = addListData(query);
 		

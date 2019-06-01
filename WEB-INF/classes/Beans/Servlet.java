@@ -23,7 +23,7 @@ public class Servlet extends HttpServlet {
 			if(request.getParameter("notify") != null){
 				DA.changeStatus(request.getParameter("status"), Integer.parseInt(request.getParameter("ID")));
 			}
-			request.setAttribute("notifications", DA.getNotifications(user.getUserid()));
+			request.setAttribute("notifications", DA.getNotifications(user.getUserid(), user.getIsadmin()));
 		}
 		catch(Exception ex){
 			System.err.println(ex.getMessage());

@@ -24,15 +24,20 @@
 		<div class="bg-danger">
 			<h2> Notifications </h2>
 			<table>
-			<tr><th> Title </th> <th> Category </th> <th> Sub Category </th> <th> date reported </th><th> Issue fixed?</tr>
+			<tr><th> Title </th> <th> Category </th> <th> Sub Category </th> <th> date reported </th>
+			<c:if test="${not userLogin.getIsadmin()}">
+			<th> Issue fixed? </th></tr>
+			</c:if>
 			<c:forEach var="notif" items="${notifications}">
 				<tr>
 					<td><c:out value="${notif.title}"/></td>
 					<td><c:out value="${notif.category}"/></td>
 					<td><c:out value="${notif.subcategory}"/></td>
 					<td><c:out value="${notif.datereported}"/></td>
+					<c:if test="${not userLogin.getIsadmin()}"> 
 					<td> <select id="option"> <option id="select"> Select option </option> <option value="Resolved"> Accept </option> <option value ="Not accepted"> Decline </option> </select> </td>
 					<td> <input type="Submit" name="notify" value="Submit"/></td>
+					</c:if>
 				</tr>
 				<input id="ID" name="ID" type="hidden" value="<c:out value="${notif.issueid}"/>"/>
 			</c:forEach>

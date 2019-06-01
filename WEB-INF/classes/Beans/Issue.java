@@ -14,6 +14,7 @@ public class Issue implements Serializable{
 	private String Category;
 	private String SubCategory;
 	private int UserID;
+	private boolean IsArticle;
 	
 	public void setIssueid(int ID){
 		this.IssueID = ID;
@@ -33,10 +34,10 @@ public class Issue implements Serializable{
 	public String getDescription(){
 		return Description;
 	}
-	public void setResolveDetails(String details){
+	public void setResolvedetails(String details){
 		this.ResolveDetails = details;
 	}
-	public String getResolveDetails(){
+	public String getResolvedetails(){
 		return ResolveDetails;
 	}
 	public void setDatereported(String datereported){
@@ -74,5 +75,11 @@ public class Issue implements Serializable{
 	}
 	public int getUserid(){
 		return this.UserID;
+	}
+	public void setIsarticle(boolean isarticle){
+		this.IsArticle = isarticle;
+	}
+	public boolean getIsarticle(){
+		return this.IsArticle;
 	}
 }

@@ -27,6 +27,7 @@ OR Status = "Completed" OR Status = "Not accepted" OR Status = "Resolved" OR Sta
 Category VARCHAR(50),
 SubCategory VARCHAR(50),
 UserID Int,
+IsArticle boolean,
 FOREIGN KEY (UserID) REFERENCES UserAccount(UserID));
 
 CREATE TABLE KnowledgeBase (
@@ -34,8 +35,7 @@ ArticleID INT Primary Key AUTO_INCREMENT,
 OriginalIssue VARCHAR(50),
 Description VARCHAR(256),
 ResolveDetails VARCHAR(256),
-DateSolved Datetime,
-Comment VARCHAR(256));
+DateSolved Datetime);
 
 CREATE TABLE IssueComment (
 CommentID INT Primary Key AUTO_INCREMENT,
@@ -51,9 +51,10 @@ insert into UserAccount values (0004, "Stacey", "Smiths", "stacey@gmail.com", 04
 insert into UserAccount values (0005, "Chad", "Smitts", "stacey@gmail.com", 0483321113, "password123", false);
 
 insert into Issue (Title, Description, ResolveDetails, DateReported, DateResolved, Status, Category, SubCategory, UserID)
-			Values ("Help can't connect", "Display error when connecting", null, "2019-05-29", null, "Waiting on reporter", "Network", "Can't Connect", 2);
+			Values ("Help can't connect", "Display error when connecting", null, "2019-05-29", null, "Resolved", "Network", "Can't Connect", 2);
 
-SELECT * FROM Issue;
+SELECT * FROM IssueComment;
+DELETE FROM IssueComment;
 INSERT INTO IssueComment (Title, Field, IssueID) VALUES ("Help me", "Plez ddddddd", 2);
 
 SELECT * FROM Issue ORDER BY Category LIKE '%Software%' DESC;
