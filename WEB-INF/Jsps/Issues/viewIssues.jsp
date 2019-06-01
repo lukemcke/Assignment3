@@ -56,7 +56,7 @@
 			<td><c:out value="${issue.category}"/></td>
 			<td><c:out value="${issue.subcategory}"/></td>
 			<td><c:out value="${issue.status}"/></td>
-			<td><a href="Issue?ID=<c:out value="${issue.issueid}"/>">View Issue</a> </td>
+			<td><a href="viewIssue?ID=<c:out value="${issue.issueid}"/>">View Issue</a> </td>
 		</tr>
 	</c:forEach>
 	</table>
@@ -74,7 +74,7 @@
 			<td><c:out value="${issue.category}"/></td>
 			<td><c:out value="${issue.subcategory}"/></td>
 			<td><c:out value="${issue.status}"/></td>
-			<td><a href="Issue?ID=<c:out value="${issue.issueid}"/>">View Issue</a> </td>
+			<td><a href="viewIssue?ID=<c:out value="${issue.issueid}"/>">View Issue</a> </td>
 		</tr>
 	</c:forEach>
 	</table>

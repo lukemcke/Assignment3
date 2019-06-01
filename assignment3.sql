@@ -54,6 +54,9 @@ insert into Issue (Title, Description, ResolveDetails, DateReported, DateResolve
 			Values ("Help can't connect", "Display error when connecting", null, "2019-05-29", null, "Waiting on reporter", "Network", "Can't Connect", 2);
 
 SELECT * FROM Issue;
+INSERT INTO IssueComment (Title, Field, IssueID) VALUES ("Help me", "Plez ddddddd", 2);
+
+SELECT * FROM Issue ORDER BY Category LIKE '%Software%' DESC;
 SELECT Title, Category, SubCategory, DateReported FROM Issue WHERE UserID = 2 AND Status = 'Waiting on reporter';
 UPDATE Issue SET Status = "New" WHERE IssueID =  24;
 DEletE FROM Issue;

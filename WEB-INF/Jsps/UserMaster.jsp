@@ -11,7 +11,7 @@
 	  <c:choose>
 		<c:when test="${sessionScope.userLogin == null || not userLogin.getIsadmin()}">
 			<li><a href="Issue">Report An Issue</a></li>
-			<li><a href="Issue">View Your Issues </a></li>
+			<li><a href="vieIssue">View Your Issues </a></li>
 		</c:when>
 		<c:otherwise>
 			<li><a href="Issue">View All Issues </a></li>
@@ -21,9 +21,9 @@
 
 	  <c:choose>
 	  <c:when test="${sessionScope.userLogin != null}">
-			<span class="navbar-text">
+			<p class="navbar-text">
 				Hello <c:out value="${userLogin.getFirstname()}"/>
-			</span>
+			</p>
 			<li><a href="Logout">Logout</a> </li>
 	  </c:when>
 	  <c:otherwise>

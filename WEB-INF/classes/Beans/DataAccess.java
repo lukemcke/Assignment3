@@ -19,9 +19,6 @@ public class DataAccess {
 	public static void addArticle() throws Exception {
 	}
 	
-	public static boolean isAdmin(int UserID) throws Exception {
-	}
-	
 	public static List<Article> searchArticles(String keyWord) throws Exception {
 		
 	}
@@ -29,8 +26,6 @@ public class DataAccess {
 	public static List<Article> sortArticles(String Category) throws Exception {
 	}
 	
-	public static List<Issue> sortIssues(Date date) throws Exception {
-	}
 	*/
 	
 	public static boolean verifyLogin(String Email, String Password) throws Exception {
@@ -152,7 +147,7 @@ public class DataAccess {
 				issue.setStatus(result.getString(7));
 				issue.setCategory(result.getString(8));
 				issue.setSubcategory(result.getString(9));
-				;
+				
 				Issues.add(issue);
 				
 			}
@@ -248,6 +243,52 @@ public class DataAccess {
 		PreparedStatement statement = connection.prepareStatement("UPDATE Issue SET Status = '"+ Status + "' WHERE IssueID = " + ID + "");
 		statement.executeUpdate();
 	}
+	
+	//Comment Methods
+	public void addComment(Comment comment) throws Exception {
+		
+		try {
+		Connection connection = Config.getConnection();
+		PreparedStatement statement = connection.prepareStatement("INSERT INTO IssueComment (Title, Field, IssueID) VALUES (?,?,?)");
+		
+		statement.setString(1, comment.getTitle());
+		statement.setString(2, comment.getField());
+		statement.setInt(3, comment.getIssueid());
+
+		statement.executeUpdate();
+		}
+		catch(SQLException e){
+			System.err.println(e.getMessage());
+			System.err.println(e.getStackTrace());
+		}
+		
+			
+	}
+	
+	public List<Comment> getComments(int IssueID) throws Exception {
+		String query = "SELECT ic.Title, ic.Field FROM IssueComment ic, Issue i WHERE i.IssueID = ic.IssueID;";
+		List<Comment> comments = new LinkedList<>();
+		try(Connection connection = Config.getConnection();
+		Statement statement = connection.createStatement(); 
+		ResultSet result = statement.executeQuery(query);){ 
+			while(result.next()){ 
+				Comment comment = new Comment();
+
+				comment.setTitle(result.getString(1));
+				comment.setField(result.getString(2));
+				
+				comments.add(comment);
+				
+			}
+		}
+		catch(SQLException e){
+			System.err.println(e.getMessage());
+			System.err.println(e.getStackTrace());
+		}
+		return comments;
+	}
+	
+	//End Comment Methods
 	
 	public List<Issue> addListData(String query) throws Exception {
 		List<Issue> Issues = new LinkedList<>();

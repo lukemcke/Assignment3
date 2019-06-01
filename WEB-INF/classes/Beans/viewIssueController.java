@@ -8,75 +8,47 @@ import java.io.Serializable;
 import java.util.*;
 import java.text.SimpleDateFormat;
 
-@WebServlet(urlPatterns = { "/Issue" })
-public class IssueController extends HttpServlet {
+@WebServlet(urlPatterns = { "/viewIssue" })
+public class viewIssueController extends HttpServlet {
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 	throws ServletException, IOException {
 		try{
 		DataAccess DA = new DataAccess();
 		RequestDispatcher dispatchIssues = getServletContext().getRequestDispatcher("/WEB-INF/Jsps/Issues/viewIssues.jsp");
+		RequestDispatcher dispatchIssue = getServletContext().getRequestDispatcher("/WEB-INF/Jsps/Issues/viewIssue.jsp");
+		//refreshes page after submitting
 		
 		HttpSession userSession = request.getSession();
 		User user = (User) userSession.getAttribute("userLogin");
 		
-		if(request.getParameter("report") != null){
-			addIssue(DA, user, request, response);
+		if(request.getParameter("addComment") != null){
+				addComment(DA, request, response);
+				setArrtibutes(DA, request, response);
+			}
+			
+		if(request.getParameter("Status") != null){
+			DA.changeStatus(request.getParameter("changeStatus"),  Integer.parseInt(request.getParameter("issueID")));
+			request.setAttribute("issues", DA.getAllIssues());
+			dispatchIssues.forward(request, response);
+		}
+			
+		if(request.getParameter("ID") != null){
+			setArrtibutes(DA, request, response);
+			//When admin clicks on view Issue changes status from new to In progress
 			if(user.getIsadmin()){
+				DA.changeStatus("In progress", Integer.parseInt(request.getParameter("ID")));
+			}
+
+			dispatchIssue.forward(request, response);
+		}
+		if(user.getIsadmin()){
 				request.setAttribute("issues", DA.getAllIssues());
 			}
 			else {
 				request.setAttribute("userissues", DA.getUserIssues(user.getUserid()));
 			}
-			dispatchIssues.forward(request, response);
-		}
-		
-		if(request.getParameter("keySearch") != null){
-				request.setAttribute("issues", DA.searchIssues(user.getIsadmin(), user.getUserid(), request.getParameter("search")));
-				request.setAttribute("userissues", DA.searchIssues(user.getIsadmin(), user.getUserid(), request.getParameter("search")));
-				dispatchIssues.forward(request, response);
-			}
-		/*
-		if(request.getParameter("Status") != null){
-			DA.changeStatus(request.getParameter("changeStatus"),  Integer.parseInt(request.getParameter("issueID")));
-			request.setAttribute("issues", DA.getAllIssues());
-			dispatchIssues.forward(request, response);
-		} */
-		
-		if(request.getParameter("sortCat") != null){
-			String category = request.getParameter("category");
-			request.setAttribute("issues", DA.sortByCategory(user.getIsadmin(), user.getUserid(), category));
-			request.setAttribute("userissues", DA.sortByCategory(user.getIsadmin(), user.getUserid(), category));
-			dispatchIssues.forward(request, response);
-		}
-		if(request.getParameter("sortDate") != null){
-			String date = request.getParameter("date");
-			request.setAttribute("issues", DA.sortByDate(user.getIsadmin(), user.getUserid(), date));
-			request.setAttribute("userissues", DA.sortByDate(user.getIsadmin(), user.getUserid(), date));
-			dispatchIssues.forward(request, response);
-		}
-		
-		/*
-		if(request.getParameter("ID") != null){
-			request.setAttribute("status", getStatusChanges());
-			
-			request.setAttribute("issue", DA.getIssue(Integer.parseInt(request.getParameter("ID"))));
-			//When admin clicks on view Issue changes status from new to In progress
-			request.setAttribute("comments", DA.getComments(Integer.parseInt(request.getParameter("ID"))));
-			if(user.getIsadmin()){
-				DA.changeStatus("In progress", Integer.parseInt(request.getParameter("ID")));
-			}
-			RequestDispatcher dispatchIssue = getServletContext().getRequestDispatcher("/WEB-INF/Jsps/Issues/viewIssue.jsp");
-			dispatchIssue.forward(request, response);
-		}
-		if(request.getParameter("addComment") != null){
-			addComment(DA, Integer.parseInt(request.getParameter("issueID")), request, response);
-		}
-		*/
-		
-		request.setAttribute("categories", DA.getCategories());
-		RequestDispatcher dispather = getServletContext().getRequestDispatcher("/WEB-INF/Jsps/Issues/addIssue.jsp");
-		dispather.forward(request, response);
+		dispatchIssues.forward(request, response);
 		}
 		catch(Exception ex){
 			System.err.println(ex.getMessage());
@@ -116,13 +88,16 @@ public class IssueController extends HttpServlet {
 		
 		return status;
 	}
-	/*
-	private void addComment(DataAccess DA, int IssueID, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-		
+	private void addComment(DataAccess DA, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+
 		try {
 		String Field = request.getParameter("comment");
+		String Title = request.getParameter("commTitle");
+		int IssueID = Integer.parseInt(request.getParameter("issueID"));
+		
 		
 		Comment comment = new Comment();
+		comment.setTitle(Title);
 		comment.setField(Field);
 		comment.setIssueid(IssueID);
 		
@@ -130,5 +105,14 @@ public class IssueController extends HttpServlet {
 		}
 		catch(Exception ex){
 		}
-	} */
+	}
+	private void setArrtibutes(DataAccess DA, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+		try {
+		request.setAttribute("status", getStatusChanges());
+		request.setAttribute("issue", DA.getIssue(Integer.parseInt(request.getParameter("ID"))));
+		request.setAttribute("comments", DA.getComments(Integer.parseInt(request.getParameter("ID"))));
+		}
+		catch(Exception ex){
+		}
+	}
 }
