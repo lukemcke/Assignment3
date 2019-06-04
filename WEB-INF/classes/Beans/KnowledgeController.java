@@ -14,12 +14,18 @@ public class KnowledgeController extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 	throws ServletException, IOException {
 		DataAccess DA = new DataAccess();
+		HttpSession userSession = request.getSession();
+		User user = (User) userSession.getAttribute("userLogin");
 		
 		RequestDispatcher dispatch = getServletContext().getRequestDispatcher("/WEB-INF/Jsps/Knowledge/KnowledgeMenu.jsp");
 		RequestDispatcher dispatchAdd = getServletContext().getRequestDispatcher("/WEB-INF/Jsps/Knowledge/addArticle.jsp");
 		RequestDispatcher dispatchView = getServletContext().getRequestDispatcher("/WEB-INF/Jsps/Knowledge/viewArticles.jsp");
 		try {
 			
+			if(user == null){
+				RequestDispatcher Login = getServletContext().getRequestDispatcher("/WEB-INF/Jsps/Knowledge/viewArticles.jsp");
+				Login.forward(request, response);
+			}
 			if(request.getParameter("ID") != null){
 				addArticle(DA, request, response);
 				request.setAttribute("articles", DA.getAllArticles());

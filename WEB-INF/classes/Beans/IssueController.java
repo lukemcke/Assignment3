@@ -19,6 +19,10 @@ public class IssueController extends HttpServlet {
 		
 		HttpSession userSession = request.getSession();
 		User user = (User) userSession.getAttribute("userLogin");
+		if(user == null){
+				RequestDispatcher Login = getServletContext().getRequestDispatcher("/WEB-INF/Jsps/Knowledge/viewArticles.jsp");
+				Login.forward(request, response);
+			}
 		
 		if(request.getParameter("report") != null){
 			addIssue(DA, user, request, response);

@@ -11,6 +11,11 @@
 </head>
 <body>
 <%@include file="UserMaster.jsp"%>
+<c:choose>
+<c:when test="${userLogin == null}">
+	<h1> Please Login to report an issue </h1>
+</c:when>
+<c:otherwise>
 <div class="text-center">
 	<div class ="container login-container">
 		<div class ="row">
@@ -37,6 +42,8 @@
 			</div>
 	</div>
 </div>
+</c:otherwise>
+</c:choose>
 </body>
 
 
