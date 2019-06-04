@@ -31,6 +31,22 @@ public class KnowledgeController extends HttpServlet {
 				dispatchAdd.forward(request, response);
 			}
 			else if(request.getParameter("viewArticles") != null) {
+				request.setAttribute("articles", DA.getAllArticles());
+				dispatchView.forward(request, response);
+			}
+			else if(request.getParameter("keySearch") != null){
+				request.setAttribute("articles", DA.searchArticles(request.getParameter("search")));
+				dispatchView.forward(request, response);	
+			}
+			else if(request.getParameter("sortCat") != null) {
+				request.setAttribute("articles", DA.sortArticles(request.getParameter("category")));
+				dispatchView.forward(request, response);
+			}
+			else if(request.getParameter("addComment") != null && request.getParameter("commTitle") != "" && request.getParameter("commField") != ""){
+				System.out.println(request.getParameter("articleID"));
+				System.out.println(request.getParameter("commTitle") + request.getParameter("commField"));
+				addComment(DA, Integer.parseInt(request.getParameter("articleID")), request.getParameter("commTitle"), request.getParameter("commField"), request, response);
+				request.setAttribute("articles", DA.getAllArticles());
 				dispatchView.forward(request, response);
 			}
 			else {
@@ -38,7 +54,7 @@ public class KnowledgeController extends HttpServlet {
 			}
 		}
 		catch(Exception ex){
-			
+			System.err.println(ex.getMessage());
 		}
 		//End Home page
 	}
@@ -57,5 +73,21 @@ public class KnowledgeController extends HttpServlet {
 		catch(Exception ex){
 		}
 	}
-	
+	public void addComment(DataAccess DA, int ArticleID, String Title, String Field, HttpServletRequest request, HttpServletResponse response)
+	throws ServletException, IOException {
+		
+		try {
+		
+		ArticleComment Comment = new ArticleComment();
+		
+		Comment.setTitle(Title);
+		Comment.setField(Field);
+		Comment.setArticleid(ArticleID);
+		
+		DA.addArticleComment(Comment);
+		}
+		catch(Exception ex){
+			System.err.println(ex.getMessage());
+		} 
+	}
 }

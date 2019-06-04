@@ -1,6 +1,7 @@
 use assignment3;
 
 DROP TABLE IssueComment;
+DROP Table ArticleComment;
 DROP TABLE Issue;
 DROP TABLE UserAccount;
 DROP TABLE KnowledgeBase;
@@ -35,7 +36,16 @@ ArticleID INT Primary Key AUTO_INCREMENT,
 OriginalIssue VARCHAR(50),
 Description VARCHAR(256),
 ResolveDetails VARCHAR(256),
+Category VARCHAR(50), 
+SubCategory VARCHAR(50),
 DateSolved Datetime);
+
+CREATE TABLE ArticleComment (
+CommentID INT Primary Key AUTO_INCREMENT,
+Title VARCHAR(50),
+Field VARCHAR(256),
+ArticleID INT,
+FOREIGN KEY (ArticleID) REFERENCES KnowledgeBase(ArticleID));
 
 CREATE TABLE IssueComment (
 CommentID INT Primary Key AUTO_INCREMENT,
@@ -53,11 +63,16 @@ insert into UserAccount values (0005, "Chad", "Smitts", "stacey@gmail.com", 0483
 insert into Issue (Title, Description, ResolveDetails, DateReported, DateResolved, Status, Category, SubCategory, UserID)
 			Values ("Help can't connect", "Display error when connecting", null, "2019-05-29", null, "In Progress", "Network", "Can't Connect", 2);
 
-SELECT * FROM Issue WHERE Status = 'Completed' OR Status = 'Resolved' AND IsArticle = false;
+SELECT * FROM KnowledgeBase;
+DELETE FROM KnowledgeBase;
+DELETE FROM ArticleComment;
+INSERt into KnowledgeBase(OriginalIssue, Description, Category, SubCategory, DateSolved) VALUES ("Help", "Help me plz", "Hardware", "Can't Connect", "2019-05-29");
+SELECT * FROM Issue WHERE (Status = 'Completed' OR Status = 'Resolved') AND IsArticle = false;
 DELETE FROM IssueComment;
 INSERT INTO IssueComment (Title, Field, IssueID) VALUES ("Help me", "Plez ddddddd", 2);
 
-SELECT * FROM Issue;
+INSERT INTO ArticleComment (Title, Field, ArticleID) VALUES ("Hello", "Hello Friend", 6);
+SELECT * FROM ArticleComment;
 SELECT * FROM Issue ORDER BY Category LIKE '%Software%' DESC;
 SELECT Title, Category, SubCategory, DateReported FROM Issue WHERE UserID = 2 AND Status = 'Waiting on reporter';
 UPDATE Issue SET Status = "New" WHERE IssueID =  24;

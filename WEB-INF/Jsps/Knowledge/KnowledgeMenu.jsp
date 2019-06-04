@@ -13,13 +13,15 @@
 <body>
 <%@include file="../UserMaster.jsp"%>
 
+<div class="container">
 <h1> Knowledge Menu </h1>
 <form action="Knowledge" method="POST">
-	<div class="container">
 		<div class="row">
+			<c:if test="${userLogin.getIsadmin()}">
 			<div class="col-md-12">
 				<input type="submit" name="addArticle" value="Add An Article"/>
 			</div>
+			</c:if>
 			<br /><br />
 			<div class="col-xs-12">
 				<input type="submit" name="viewArticles" value="View Articles"/>

@@ -8,6 +8,8 @@ public class Knowledge implements Serializable{
 	private String OriginalIssue;
 	private String Description;
 	private String ResolveDetails;
+	private String Category;
+	private String SubCategory;
 	private String DateSolved;
 	
 	public void setArticleid(int articleID){
@@ -33,6 +35,18 @@ public class Knowledge implements Serializable{
 	}
 	public String getResolvedetails(){
 		return this.ResolveDetails;
+	}
+	public void setCategory(String category){
+		this.Category = category;
+	}
+	public String getCategory(){
+		return this.Category;
+	}
+	public void setSubcategory(String subcategory){
+		this.SubCategory = subcategory;
+	}
+	public String getSubcategory(){
+		return this.SubCategory;
 	}
 	public void setDatesolved(String datesolved){
 		this.DateSolved = datesolved;

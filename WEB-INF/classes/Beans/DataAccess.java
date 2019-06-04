@@ -8,17 +8,6 @@ import java.util.*;
 
 public class DataAccess {
 	
-	/*
-	
-	
-	public static List<Article> searchArticles(String keyWord) throws Exception {
-		
-	}
-	
-	public static List<Article> sortArticles(String Category) throws Exception {
-	}
-	
-	*/
 	
 	public static boolean verifyLogin(String Email, String Password) throws Exception {
 		
@@ -51,6 +40,7 @@ public class DataAccess {
 				issue.setTitle(result.getString(2));
 				issue.setDescription(result.getString(3));
 				issue.setDatereported(result.getString(5));
+				issue.setDateresolved(result.getString(6));
 				issue.setStatus(result.getString(7));
 				issue.setCategory(result.getString(8));
 				issue.setSubcategory(result.getString(9));
@@ -117,7 +107,9 @@ public class DataAccess {
 				issue.setIssueid(result.getInt(1));
 				issue.setTitle(result.getString(2));
 				issue.setDescription(result.getString(3));
+				issue.setResolvedetails(result.getString(4));
 				issue.setDatereported(result.getString(5));
+				issue.setDateresolved(result.getString(6));
 				issue.setStatus(result.getString(7));
 				issue.setCategory(result.getString(8));
 				issue.setSubcategory(result.getString(9));
@@ -131,7 +123,7 @@ public class DataAccess {
 	}
 	
 	public static List<Knowledge> getAllArticles() throws Exception{
-		String query = "SELECT * FROM Knowledge";
+		String query = "SELECT * FROM KnowledgeBase";
 		List<Knowledge> articles = new LinkedList<>();
 		try(Connection connection = Config.getConnection();
 		Statement statement = connection.createStatement(); 
@@ -143,7 +135,9 @@ public class DataAccess {
 				article.setOriginalissue(result.getString(2));
 				article.setDescription(result.getString(3));
 				article.setResolvedetails(result.getString(4));
-				article.setDatesolved(result.getString(5));
+				article.setCategory(result.getString(5));
+				article.setSubcategory(result.getString(6));
+				article.setDatesolved(result.getString(7));
 				
 				articles.add(article);
 				
@@ -169,6 +163,7 @@ public class DataAccess {
 				issue.setTitle(result.getString(2));
 				issue.setDescription(result.getString(3));
 				issue.setDatereported(result.getString(5));
+				issue.setDateresolved(result.getString(6));
 				issue.setStatus(result.getString(7));
 				issue.setCategory(result.getString(8));
 				issue.setSubcategory(result.getString(9));
@@ -216,13 +211,15 @@ public class DataAccess {
 		Connection connection = Config.getConnection();
 		
 		try {
-			PreparedStatement statement = connection.prepareStatement("INSERT INTO KnowledgeBase (Originalssue, Description, ResolveDetails, DateSolved) VALUES (?,?,?,?)");
+			PreparedStatement statement = connection.prepareStatement("INSERT INTO KnowledgeBase (OriginalIssue, Description, ResolveDetails, Category, SubCategory, DateSolved) VALUES (?,?,?,?,?,?)");
 			PreparedStatement changeStatement = connection.prepareStatement("UPDATE Issue SET IsArticle = true WHERE IssueID = " + issue.getIssueid() + "");
 			
 			statement.setString(1, issue.getTitle());
 			statement.setString(2, issue.getDescription());
 			statement.setString(3, issue.getResolvedetails());
-			statement.setString(4, issue.getDateresolved());
+			statement.setString(4, issue.getCategory());
+			statement.setString(5, issue.getSubcategory());
+			statement.setString(6, issue.getDateresolved());
 			
 			changeStatement.executeUpdate();
 			statement.executeUpdate();
@@ -249,7 +246,7 @@ public class DataAccess {
 	}
 	
 	public List<Issue> listIssues() throws Exception{
-		String query = "SELECT * FROM Issue WHERE Status = 'Completed' OR Status = 'Resolved' AND IsArticle = false";
+		String query = "SELECT * FROM Issue WHERE (Status = 'Completed' OR Status = 'Resolved') AND IsArticle = false";
 		
 		List<Issue> Issues = addListData(query);
 		
@@ -342,6 +339,26 @@ public class DataAccess {
 			
 	}
 	
+	public void addArticleComment(ArticleComment comment) throws Exception {
+		
+		try {
+		Connection connection = Config.getConnection();
+		PreparedStatement statement = connection.prepareStatement("INSERT INTO ArticleComment (Title, Field, ArticleID) VALUES (?,?,?)");
+		
+		statement.setString(1, comment.getTitle());
+		statement.setString(2, comment.getField());
+		statement.setInt(3, comment.getArticleid());
+
+		statement.executeUpdate();
+		}
+		catch(SQLException e){
+			System.err.println(e.getMessage());
+			System.err.println(e.getStackTrace());
+		}
+		
+			
+	}
+	
 	public List<Comment> getComments(int IssueID) throws Exception {
 		String query = "SELECT ic.Title, ic.Field FROM IssueComment ic, Issue i WHERE i.IssueID = ic.IssueID;";
 		List<Comment> comments = new LinkedList<>();
@@ -365,6 +382,86 @@ public class DataAccess {
 		return comments;
 	}
 	
+	public List<ArticleComment> getArticleComments(int ArticleID) throws Exception {
+		String query = "SELECT ic.Title, ic.Field FROM ArticleComment ic, KnowledgeBase i WHERE i.ArticleID = ic.ArticleID AND ic.ArticleID = "+ ArticleID + "";
+		List<ArticleComment> comments = new LinkedList<>();
+		try(Connection connection = Config.getConnection();
+		Statement statement = connection.createStatement(); 
+		ResultSet result = statement.executeQuery(query);){ 
+			while(result.next()){ 
+				ArticleComment comment = new ArticleComment();
+
+				comment.setTitle(result.getString(1));
+				comment.setField(result.getString(2));
+				
+				comments.add(comment);
+				
+			}
+		}
+		catch(SQLException e){
+			System.err.println(e.getMessage());
+			System.err.println(e.getStackTrace());
+		}
+		return comments;
+	}
+	
+	public static List<Knowledge> sortArticles(String Category) throws Exception{
+		String query =  "SELECT * FROM KnowledgeBase ORDER BY Category LIKE '%" + Category + "%' DESC";
+		List<Knowledge> articles = new LinkedList<>();
+		try(Connection connection = Config.getConnection();
+		Statement statement = connection.createStatement(); 
+		ResultSet result = statement.executeQuery(query);){ 
+			while(result.next()){ 
+				Knowledge article = new Knowledge();
+
+				article.setArticleid(result.getInt(1));
+				article.setOriginalissue(result.getString(2));
+				article.setDescription(result.getString(3));
+				article.setResolvedetails(result.getString(4));
+				article.setCategory(result.getString(5));
+				article.setSubcategory(result.getString(6));
+				article.setDatesolved(result.getString(7));
+				
+				articles.add(article);
+				
+			}
+		}
+		catch(SQLException e){
+			System.err.println(e.getMessage());
+			System.err.println(e.getStackTrace());
+		}
+		return articles;
+	}
+	
+	public static List<Knowledge> searchArticles(String keyWord) throws Exception{
+		String query =  "SELECT * FROM KnowledgeBase WHERE OriginalIssue LIKE '%"+ keyWord + "%' OR Description LIKE '%" + keyWord + "%' OR Category LIKE '%"+ keyWord + "%' OR ResolveDetails LIKE '%"+ keyWord + "%'";
+		List<Knowledge> articles = new LinkedList<>();
+		try(Connection connection = Config.getConnection();
+		Statement statement = connection.createStatement(); 
+		ResultSet result = statement.executeQuery(query);){ 
+			while(result.next()){ 
+				Knowledge article = new Knowledge();
+
+				article.setArticleid(result.getInt(1));
+				article.setOriginalissue(result.getString(2));
+				article.setDescription(result.getString(3));
+				article.setResolvedetails(result.getString(4));
+				article.setCategory(result.getString(5));
+				article.setSubcategory(result.getString(6));
+				article.setDatesolved(result.getString(7));
+				
+				articles.add(article);
+				
+			}
+		}
+		catch(SQLException e){
+			System.err.println(e.getMessage());
+			System.err.println(e.getStackTrace());
+		}
+		return articles;
+	}
+	
+
 	//End Comment Methods
 	
 	public List<Issue> addListData(String query) throws Exception {
@@ -378,7 +475,9 @@ public class DataAccess {
 				issue.setIssueid(result.getInt(1));
 				issue.setTitle(result.getString(2));
 				issue.setDescription(result.getString(3));
+				issue.setResolvedetails(result.getString(4));
 				issue.setDatereported(result.getString(5));
+				issue.setDateresolved(result.getString(6));
 				issue.setStatus(result.getString(7));
 				issue.setCategory(result.getString(8));
 				issue.setSubcategory(result.getString(9));
