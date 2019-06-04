@@ -24,22 +24,28 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-md-6">
+		<div class="col-xs-12 col-md-6">
 			<span>Issue ID </span>
 			<label name="ID" for="category"><c:out value="${issue.issueid}"/></label> <br />
 			<span>Category Type </span>
 			<label for="category"><c:out value="${issue.category}"/></label> <br />
 			<span> SubCategory Type </span>
 			<label for="subcategory"><c:out value="${issue.subcategory}"/></label> <br>
-			<span> Description </span>
+			<input type="hidden" name="issueID" value="<c:out value="${issue.issueid}"/>"/>
+			<hr />
+		</div>
+		<div class="col-xs-12 col-md-6">
+		<span> Description </span>
 			<label for="description"><c:out value="${issue.description}"/></label> <br />
 			<span> Date Reported</span>
 			<label for="deteReported"><c:out value="${issue.datereported}"/></label> <br />
 			<span> Status </span>
 			<label for="deteReported"><c:out value="${issue.status}"/></label> <br />
-			<input type="hidden" name="issueID" value="<c:out value="${issue.issueid}"/>"/>
-			<hr />
-			<c:choose>
+		</div>
+		</div>
+		<div class="row">
+		<div class="col-xs-12 col-md-6">
+		<c:choose>
 			<c:when test="${empty comments}">
 				<span> There are no comments for this issue </span>
 			</c:when>
@@ -60,8 +66,7 @@
 			<textarea name="comment" rows="3" cols="30" placeholder="Enter your Comment here"></textarea> <br />
 			<input id="btnaddComment" class="btn btn-default" type="submit" name="addComment" value="Add Comment"/>
 		</div>
-
-		<div class="col-md-6">
+		<div class="col-xs-12 col-md-6">
 			
 			<h3> Change Status </h3>
 			<Select id="status" name="changeStatus">

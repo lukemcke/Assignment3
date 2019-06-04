@@ -8,42 +8,33 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/css/LoginStyleSheet.css" />
+		<script src="${pageContext.request.contextPath}/js/Script.js"></script>
 </head>
 <body>
 <%@include file="UserMaster.jsp"%>
-<c:choose>
-<c:when test="${userLogin == null}">
-	<h1> Please Login to report an issue </h1>
-</c:when>
-<c:otherwise>
 <div class="text-center">
 	<div class ="container login-container">
 		<div class ="row">
 			<div class = "col-md-5 login-form-1 text-center">	
-				<h3>LOGIN</h3>
-				<form action="Login" method="POST">
+				<h3>Login to report and view issues</h3>
+				<form action="Login" method="POST" onsubmit="return validateLogin()">
 					<div class="form-group">
 						<label for="email"> Email </label>
-						<input name="email" type="text" class= "form-control" 
+						<input id="email" name="email" type="text" class= "form-control" 
 						placeholder="Your Email *" value =""/>
 					</div>
 					<div>
 						<label for="passowrd"> Password </label>
-						<input name="password" type="password" class= "form-control" 			placeholder="Your Password*" value =""/>
+						<input id="password" name="password" type="password" class= "form-control" 			placeholder="Your Password*" value =""/>
 					</div>
 					<div class = form-group>
 						<br>
 						<input type="Submit" class ="btnSubmit" name="login" value="Login" />
 					</div>
-					<div class="form-group">
-						<a href="#" class="PWForget">Forget Password?</a>
-					</div>
 				</form>
 			</div>
 	</div>
 </div>
-</c:otherwise>
-</c:choose>
 </body>
 
 

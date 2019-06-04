@@ -19,12 +19,12 @@
 		<div class="row">
 			<c:if test="${userLogin.getIsadmin()}">
 			<div class="col-md-12">
-				<input type="submit" name="addArticle" value="Add An Article"/>
+				<input class="btn btn-lg btn-default" type="submit" name="addArticle" value="Add An Article"/>
 			</div>
 			</c:if>
-			<br /><br />
-			<div class="col-xs-12">
-				<input type="submit" name="viewArticles" value="View Articles"/>
+			<br /><br /><br /><br />
+			<div class="col-md-12">
+				<input class="btn btn-lg btn-default" type="submit" name="viewArticles" value="View Articles"/>
 			</div>
 		</div>
 	</div>

@@ -17,15 +17,17 @@ public class viewIssueController extends HttpServlet {
 		DataAccess DA = new DataAccess();
 		RequestDispatcher dispatchIssues = getServletContext().getRequestDispatcher("/WEB-INF/Jsps/Issues/viewIssues.jsp");
 		RequestDispatcher dispatchIssue = getServletContext().getRequestDispatcher("/WEB-INF/Jsps/Issues/viewIssue.jsp");
-		//refreshes page after submitting
 		
+		//checks to see if session is null if it is send to login page
 		HttpSession userSession = request.getSession();
+		
+		if(userSession.getAttribute("userLogin") == null){
+				RequestDispatcher Login = getServletContext().getRequestDispatcher("/WEB-INF/Jsps/Login.jsp");
+				Login.forward(request, response);
+		}
+		
 		User user = (User) userSession.getAttribute("userLogin");
 		
-		if(user == null){
-				RequestDispatcher Login = getServletContext().getRequestDispatcher("/WEB-INF/Jsps/Knowledge/viewArticles.jsp");
-				Login.forward(request, response);
-			}
 			
 		//Add comment then returns back to view issues
 		if(request.getParameter("addComment") != null){
@@ -33,11 +35,11 @@ public class viewIssueController extends HttpServlet {
 				setArrtibutes(DA, request, response);
 			}
 			
+		//Changes status and Resolve details using the current issueID
 		if(request.getParameter("Status") != null){
 			DA.changeStatus(request.getParameter("changeStatus"),  Integer.parseInt(request.getParameter("issueID")));
 			DA.addResolveDetails(Integer.parseInt(request.getParameter("issueID")), request.getParameter("resolvedetails"));
-			request.setAttribute("issues", DA.getAllIssues());
-			dispatchIssues.forward(request, response);
+			setArrtibutes(DA, request, response);
 		}
 			
 		if(request.getParameter("ID") != null){
@@ -113,6 +115,7 @@ public class viewIssueController extends HttpServlet {
 		catch(Exception ex){
 		}
 	}
+	//Set the data for drop-down box, current issue being displayed and comments for that issue
 	private void setArrtibutes(DataAccess DA, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		try {
 		request.setAttribute("status", getStatusChanges());

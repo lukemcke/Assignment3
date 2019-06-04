@@ -54,30 +54,39 @@ Field VARCHAR(256),
 IssueID INT,
 FOREIGN KEY (IssueID) REFERENCES Issue(IssueID));
 
+ALTER TABLE Issue AUTO_INCREMENT = 1;
+ALTER TABLE knowledgebase auto_increment = 1;
+
 insert into UserAccount values (0001, "James", "Smith", "james@gmail.com", 0445795767, "password123", true);
 insert into UserAccount values (0002, "David", "Smithy", "david@gmail.com", 0400864565, "password123", false);
-insert into UserAccount values (0003, "Jane", "Smithers", "jane@gmail.com", 0449219345, "password123", false);
-insert into UserAccount values (0004, "Stacey", "Smiths", "stacey@gmail.com", 0485663232, "password123", false);
-insert into UserAccount values (0005, "Chad", "Smitts", "stacey@gmail.com", 0483321113, "password123", false);
+insert into UserAccount values (0003, "Jane", "Smithers", "jane@gmail.com", 0404364565, "password123", false);
+insert into UserAccount values (0004, "Harry", "Smitt", "harry@gmail.com", 0400864565, "password123", false);
 
-insert into Issue (Title, Description, ResolveDetails, DateReported, DateResolved, Status, Category, SubCategory, UserID)
-			Values ("Help can't connect", "Display error when connecting", null, "2019-05-29", null, "In Progress", "Network", "Can't Connect", 2);
+insert into Issue (Title, Description, DateReported, DateResolved, Status, ResolveDetails, Category, SubCategory, UserID)
+Values ("Help can't connect", "Displaying 'ERR_CERT_SYMANTEC_LEGACY' Error Please help ASAP",  "2019-05-29", null,"In Progress", null, "Network", "Can't Connect", 2),
+		("Can't Send Email", " Error : Your email was unable to send because the connection to mail server was interrupted", "2019-06-1", null, "New", null, "Email", "Can't Send", 2),
+        ("Disk is broken", " I don't have permission to access my U drive!", "2019-05-11", "2019-06-23", "Completed", "The Admin was contacted and permission was given", "Hardware", "Disk drive", 4),
+        ("My Computer keeps bluescreening :(", "blue screen error 'memory_management'", "2019-06-05", null, "Not accepted",  null, "Hardware", "Computer 'blue screens'", 3);
+        
+INSERT INTO KnowledgeBase (OriginalIssue, Description, ResolveDetails, Category, SubCategory, DateSolved)
+VALUES ("Eclipse Keeps crashing help", "Every time I open Eclipse it closes almost immediately", "Changed Computers", "Software", "Slow to load", "2019-06-03"),
+		("My internet not working", "Internet icon keeps coming up with warning sign", "Took out the ethernet cable and put it back in", "Network", "Constant dropouts", "2019-05-11"),
+        ("Password is wrong", "I tried logging in with same account and it is not working", "Contacted my admin to help reset my password", "Account", "Wrong Details", "2019-02-21");
 
-SELECT * FROM KnowledgeBase;
-DELETE FROM KnowledgeBase;
-DELETE FROM ArticleComment;
-INSERt into KnowledgeBase(OriginalIssue, Description, Category, SubCategory, DateSolved) VALUES ("Help", "Help me plz", "Hardware", "Can't Connect", "2019-05-29");
-SELECT * FROM Issue WHERE (Status = 'Completed' OR Status = 'Resolved') AND IsArticle = false;
-DELETE FROM IssueComment;
-INSERT INTO IssueComment (Title, Field, IssueID) VALUES ("Help me", "Plez ddddddd", 2);
+INSERT INTO ArticleComment (Title, Field, ArticleID)
+VALUES ("Thanks", "Very useful article helped alot", 1),
+		("Not working!", "I tried this and didn't work someone please help", 2),
+        ("Worked", "Worked thank you very much", 2),
+        ("Contacted!", "Contacting you administrator always helps", 3);
+ 
 
-INSERT INTO ArticleComment (Title, Field, ArticleID) VALUES ("Hello", "Hello Friend", 6);
-SELECT * FROM ArticleComment;
-SELECT * FROM Issue ORDER BY Category LIKE '%Software%' DESC;
-SELECT Title, Category, SubCategory, DateReported FROM Issue WHERE UserID = 2 AND Status = 'Waiting on reporter';
-UPDATE Issue SET Status = "New" WHERE IssueID =  24;
-DEletE FROM Issue;
+INSERT INTO IssueComment (Title, Field, IssueID)
+VALUES ("Solved?", "Hello has the issue been solved yet?", 1),
+		("In Progress", "Hi we are currently trying to solve the issue now", 1),
+        ("Third party", "We have sent the issue to a third party to try and help", 2),
+        ("Thanks", "Thank your it would be nice to have internet again", 2);
+        
+        
 
-SELECT * FROM Issue WHERE Category LIKE '%Hardware%';
 
-SELECT * FROM UserAccount WHERE Email = 'james@gmail.com';
+

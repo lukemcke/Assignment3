@@ -312,8 +312,16 @@ public class DataAccess {
 		return Issues;
 	}
 	
+	//Change status of the issue from user or admin
 	public void changeStatus(String Status, int ID) throws Exception{
 		Connection connection = Config.getConnection();
+		//if equal complete or resolved add dateSolved
+		if(Status.equals("Completed") || Status.equals("Resolved")){
+			long now = System.currentTimeMillis();
+			java.sql.Timestamp timestamp = new java.sql.Timestamp(now);
+			PreparedStatement state = connection.prepareStatement("UPDATE Issue SET DateResolved = '"+ timestamp + "' WHERE IssueID = " + ID + "");
+			state.executeUpdate();
+		}
 		PreparedStatement statement = connection.prepareStatement("UPDATE Issue SET Status = '"+ Status + "' WHERE IssueID = " + ID + "");
 		statement.executeUpdate();
 	}
@@ -360,7 +368,7 @@ public class DataAccess {
 	}
 	
 	public List<Comment> getComments(int IssueID) throws Exception {
-		String query = "SELECT ic.Title, ic.Field FROM IssueComment ic, Issue i WHERE i.IssueID = ic.IssueID;";
+		String query = "SELECT ic.Title, ic.Field FROM IssueComment ic, Issue i WHERE "+ IssueID + " = ic.IssueID AND i.IssueID = "+ IssueID + "";
 		List<Comment> comments = new LinkedList<>();
 		try(Connection connection = Config.getConnection();
 		Statement statement = connection.createStatement(); 

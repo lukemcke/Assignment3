@@ -25,6 +25,8 @@ public class LoginController extends HttpServlet {
 				if(DA.verifyLogin(request.getParameter("email"), request.getParameter("password")))
 				{
 					session.setAttribute("userLogin", DA.getUser(request.getParameter("email")));
+					User user = (User) session.getAttribute("userLogin");
+					request.setAttribute("notifications", DA.getNotifications(user.getUserid(), user.getIsadmin()));
 					dispatchIndex.forward(request, response);
 				}
 					
@@ -33,6 +35,7 @@ public class LoginController extends HttpServlet {
 		catch (Exception ex){
 			
 		}
+		
 		dispatchLogin.forward(request, response);
 	}
 	

@@ -20,7 +20,7 @@ public class Servlet extends HttpServlet {
 		User user = (User) userSession.getAttribute("userLogin");
 		
 		try {
-			if(request.getParameter("notify") != null){
+			if(request.getParameter("notify") != null && request.getParameter("resolvedetails") != ""){
 				DA.changeStatus(request.getParameter("status"), Integer.parseInt(request.getParameter("ID")));
 				DA.addResolveDetails(Integer.parseInt(request.getParameter("ID")), request.getParameter("resolvedetails"));
 			}

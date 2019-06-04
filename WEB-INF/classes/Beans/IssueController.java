@@ -18,11 +18,14 @@ public class IssueController extends HttpServlet {
 		RequestDispatcher dispatchIssues = getServletContext().getRequestDispatcher("/WEB-INF/Jsps/Issues/viewIssues.jsp");
 		
 		HttpSession userSession = request.getSession();
-		User user = (User) userSession.getAttribute("userLogin");
-		if(user == null){
-				RequestDispatcher Login = getServletContext().getRequestDispatcher("/WEB-INF/Jsps/Knowledge/viewArticles.jsp");
+		
+		if(userSession.getAttribute("userLogin") == null){
+				RequestDispatcher Login = getServletContext().getRequestDispatcher("/WEB-INF/Jsps/Login.jsp");
 				Login.forward(request, response);
-			}
+		}
+		
+		User user = (User) userSession.getAttribute("userLogin");
+		
 		
 		if(request.getParameter("report") != null){
 			addIssue(DA, user, request, response);

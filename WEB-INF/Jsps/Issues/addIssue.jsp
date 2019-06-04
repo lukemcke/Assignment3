@@ -11,18 +11,29 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+		<script src="${pageContext.request.contextPath}/js/Script.js"></script>
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css" />
+		
 	</head>
 <body>
 	<%@include file="../UserMaster.jsp"%>
 	
-<form id="reportForm" action="Issue" Method="POST">
+<div class="container">
+<h1> Report An Issue </h1>
+<div class="row">
+<div class="col-md-4"
+<form id="reportForm" action="Issue" Method="POST" onsubmit="return validateReport()">
+	<div class="form-group">
 	<label for="issueTitle"> Title </label> <br />
-	<input type="text" name="issueTitle"> <br />
+	<input class="form-control" id="txtTitle" type="text" name="issueTitle"> <br />
+	</div>
 	
+	<div class="form-group">
 	<label for="issueDescription"> Description </label><br />
-	<textarea name="issueDescription" rows="5" cols="30" placeholder="Enter your problem here"></textarea> <br />
-	
-	<select id="Cat" name="category">
+	<textarea class="form-control" id="txtarea" name="issueDescription" rows="5" cols="30" placeholder="Enter your problem here"></textarea> <br />
+	</div>
+	<div class="form-group">
+	<select class="form-control" id="Cat" name="category">
 		<option id="select"> Select A Category </option>
 		<c:forEach items="${categories}" var="category">
 			<option value="${category}">${category}</option>
@@ -30,39 +41,43 @@
 	</select>
 	<br /><br />
 	
-	<select id="network" name="subCategory" class="subCat">
+	<select id="network" name="subCategory" class="subCat form-control">
 		<option value="Can't Connect"> Can't Connect</option>
 		<option value="Speed"> Speed </option>
 		<option value="Constant Dropouts"> Constant Dropouts</option>
 	</select>
 	
-	<select id="software" name="subCategory" class="subCat">
+	<select id="software" name="subCategory" class="subCat form-control">
 		<option value="Slow to load"> Slow to load</option>
 		<option value="Won't load at all"> Won't load at all </option>
 	</select>
 	
-	<select id="hardware" name="subCategory" class="subCat">
+	<select id="hardware" name="subCategory" class="subCat form-control">
 		<option value="Computer won't turn on"> Computer won't turn on</option>
 		<option value="Computer 'blue screens'"> Computer "blue screens" </option>
 		<option value="Disk drive"> Disk drive</option>
 		<option value="Peripherals">Peripherals </option>
 	</select>
 	
-	<select id="email" name="subCategory" class="subCat">
+	<select id="email" name="subCategory" class="subCat form-control">
 		<option value="Can't send"> Can't send</option>
 		<option value="Can't receive"> Can't receive </option>
 		<option value="SPAM/Phishing"> SPAM/Phishing </option>
 	</select>
 	
-	<select id="account" name="subCategory" class="subCat">
+	<select id="account" name="subCategory" class="subCat form-control">
 		<option value="Password reset"> Password reset</option>
 		<option value="Wrong details">Wrong details</option>
 	</select>
-	<br />
+	<br /> <br /> <br />
 	
 	<input id="hidden" name="inputSubCategory" type="hidden" value=""/>
-	<input type="submit" name="report" value="Report Issue"/>
+	<input class="btn btn-default" type="submit" name="report" value="Report Issue"/>
+	</div>
 </form>
+</div>
+</div>
+</div>
 <script>
 	$(".subCat").hide();
 	var name = "";

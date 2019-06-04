@@ -22,10 +22,6 @@ public class KnowledgeController extends HttpServlet {
 		RequestDispatcher dispatchView = getServletContext().getRequestDispatcher("/WEB-INF/Jsps/Knowledge/viewArticles.jsp");
 		try {
 			
-			if(user == null){
-				RequestDispatcher Login = getServletContext().getRequestDispatcher("/WEB-INF/Jsps/Knowledge/viewArticles.jsp");
-				Login.forward(request, response);
-			}
 			if(request.getParameter("ID") != null){
 				addArticle(DA, request, response);
 				request.setAttribute("articles", DA.getAllArticles());

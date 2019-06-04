@@ -40,7 +40,6 @@
 		</tr>
 		</c:forEach>
 	</table>
-	<input type="submit" name="addArticle" value="Add Article"/>
 	</c:otherwise>
 	</c:choose>
 </form>

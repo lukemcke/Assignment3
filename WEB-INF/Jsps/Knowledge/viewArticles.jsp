@@ -52,9 +52,9 @@
 					
 				</div>
 				<div class="col-md-4">
-					<h5> Description </h5>
+					<h4> Description </h4>
 					<span> <c:out value="${art.description}"/> </span> <br />
-					<h5> Resolve Details </h5> <br />
+					<h4> Resolve Details </h4>
 					<span> <c:out value="${art.resolvedetails}"/> </span>
 				</div>
 				</div>
@@ -82,9 +82,8 @@
 					<input class="commTitle" type="text" name="commTitle"/> <br />
 					<label for="field"> Field </label>  <br/>
 					<textarea class="commField" name="commField" rows="5" cols="30" placeholder="Enter A comment"></textarea> <br /> <br />
-					<input class="btnSubmit" type="submit" name="addComment" value="submit comment"/>
+					<input class="btnSubmit" type="submit" name="addComment" value="Submit Comment"/>
 					<input name="articleID" type="hidden" value="<c:out value="${art.articleid}"/>"/>
-					<button class="test"  value="test"> Test </button>
 				</div>
 				</div>
 			</c:forEach>
