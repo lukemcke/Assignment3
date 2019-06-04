@@ -38,18 +38,8 @@
 			<span> Status </span>
 			<label for="deteReported"><c:out value="${issue.status}"/></label> <br />
 			<input type="hidden" name="issueID" value="<c:out value="${issue.issueid}"/>"/>
-		</div>
-
-		<div class="col-md-6">
-		<c:if test="${userLogin.getIsadmin()}">
-			<Select id="status" name="changeStatus">
-				<c:forEach var="s" items="${status}">
-					<option> ${s} </option>
-				</c:forEach>
-			</Select>
-			<input type="submit" class="btn btn-default" name="Status" value="Change Status"/>
-		</c:if>
-		<c:choose>
+			<hr />
+			<c:choose>
 			<c:when test="${empty comments}">
 				<span> There are no comments for this issue </span>
 			</c:when>
@@ -68,13 +58,44 @@
 			<input type="text" name="commTitle" /> <br />
 			<span> Comment </span> <br />
 			<textarea name="comment" rows="3" cols="30" placeholder="Enter your Comment here"></textarea> <br />
-			<input id="btnaddComment" type="submit" name="addComment" value="Add Comment"/>
+			<input id="btnaddComment" class="btn btn-default" type="submit" name="addComment" value="Add Comment"/>
+		</div>
+
+		<div class="col-md-6">
+			
+			<h3> Change Status </h3>
+			<Select id="status" name="changeStatus">
+				<option id="select"> Select an Option </option>
+			<c:if test="${userLogin.getIsadmin()}">
+				<option value="Waiting on third party"> Waiting on third party</option>
+				<option value="Waiting on reporter"> Waiting on reporter</option>
+				<option value="Completed"> Completed </option>
+			</c:if>
+			<c:if test="${not userLogin.getIsadmin()}">
+				<option value="Resolved"> Resolved </option>
+			</c:if>
+			</Select> <br /><br />
+			<div id="resolvedetails">
+				<label for="resolvedetails"> Resolve Details </label><br />
+				<textarea name="resolvedetails" rows="5" cols="30" placeholder="Enter how your problem was solved"></textarea> <br />
+			</div>
+			<input type="submit" class="btn btn-default" name="Status" value="Change Status"/> <br />
 		</div>
 	</div>
 </div>
 			
 </form>
 <script>
+	$('#resolvedetails').hide();
+		$('#status').change( function() {
+			$('#select').remove();
+			if(this.value == 'Resolved' || this.value == 'Completed'){
+				$('#resolvedetails').show();
+			}
+			else {
+				$('#resolvedetails').hide();
+			}
+		});
 </script>
 </body>
 </html>

@@ -65,6 +65,13 @@ public class DataAccess {
 		}
 		return Issues;
 	}
+	//Sets resolve details by IssueID from the notifications
+	public void addResolveDetails(int IssueID, String resolvedetails) throws Exception{
+		Connection connection = Config.getConnection();
+		PreparedStatement statement = connection.prepareStatement("UPDATE Issue SET ResolveDetails = '"+ resolvedetails + "' WHERE IssueID = " + IssueID + "");
+		statement.executeUpdate();
+		
+	}
 	
 	public static User getUser(String Email) throws Exception {
 		String query = "SELECT * FROM UserAccount WHERE Email = '"+ Email + "'";
@@ -271,6 +278,21 @@ public class DataAccess {
 		}
 		else {
 			query =  "SELECT * FROM Issue WHERE UserID = "+ UserID + " ORDER BY Category LIKE '%" + Category + "%' DESC";
+		}
+		
+		List<Issue> Issues = addListData(query);
+		
+		return Issues;
+	}
+	
+	public List<Issue> sortByStatus(boolean isAdmin, int UserID, String Status) throws Exception {
+		String query = "";
+		//IF the user is admin returns all issues by a category otherwise sort issues from that specific user
+		if(isAdmin){
+			query = "SELECT * FROM Issue ORDER BY Status LIKE '%" + Status + "%' DESC";
+		}
+		else {
+			query =  "SELECT * FROM Issue WHERE UserID = "+ UserID + " ORDER BY Status LIKE '%" +Status + "%' DESC";
 		}
 		
 		List<Issue> Issues = addListData(query);

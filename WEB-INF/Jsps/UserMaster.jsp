@@ -21,7 +21,7 @@
 
 	  <c:choose>
 	  <c:when test="${sessionScope.userLogin != null}">
-			<p class="navbar-text">
+			<p class="navbar-text" style="color : black">
 				Hello <c:out value="${userLogin.getFirstname()}"/>
 			</p>
 			<li><a href="Logout">Logout</a> </li>

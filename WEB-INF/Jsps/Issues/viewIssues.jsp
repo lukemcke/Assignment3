@@ -16,11 +16,11 @@
 <form action="Issue" method="POST">
 <div class="container">
 	<div class="row">
-		<div class="col-xs-4">
+		<div class="col-xs-3">
 			<input type="text" name="search" placeholder="Search for key words" />
 			<input type="submit" class="btn btn-default" name="keySearch" value="Search"/>
 		</div>
-		<div class="col-xs-4">
+		<div class="col-xs-3">
 			<select id="Cat" name="category">
 				<option value="Network"> Network </option>
 				<option value="Software"> Software </option>
@@ -28,14 +28,22 @@
 				<option value="Email"> Email </option>
 				<option value="Account"> Account </option>
 			</select>
-			<input type="submit" class="btn btn-default" name="sortCat" value="Sort By Category"/>
+			<input type="submit" name="sortCat" value="Sort By Category"/>
 		</div>
-		<div class="col-xs-4">
+		<div class="col-xs-3">
+			<select id="Status" name="status">
+				<option value="Waiting on third party"> Waiting on party</option>
+				<option value="Waiting on reporter"> Waiting on reporter </option>
+				<option value="In Progress"> In Progress </option>
+			</select>
+			<input type="submit" name="sortStatus" value="Sort By Status"/>
+		</div>
+		<div class="col-xs-3">
 			<select name="date">
 				<option value="ASC"> Ascending </option>
 				<option value="DESC"> Decending </option>
 			</select>
-			<input type="submit" class="btn btn-default" name="sortDate" value="Sort by Date"/>
+			<input type="submit" name="sortDate" value="Sort by Date"/>
 		</div>
 	</div>
 </div>

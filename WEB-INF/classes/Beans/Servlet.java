@@ -22,6 +22,7 @@ public class Servlet extends HttpServlet {
 		try {
 			if(request.getParameter("notify") != null){
 				DA.changeStatus(request.getParameter("status"), Integer.parseInt(request.getParameter("ID")));
+				DA.addResolveDetails(Integer.parseInt(request.getParameter("ID")), request.getParameter("resolvedetails"));
 			}
 			request.setAttribute("notifications", DA.getNotifications(user.getUserid(), user.getIsadmin()));
 		}

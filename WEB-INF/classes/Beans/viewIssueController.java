@@ -30,6 +30,7 @@ public class viewIssueController extends HttpServlet {
 			
 		if(request.getParameter("Status") != null){
 			DA.changeStatus(request.getParameter("changeStatus"),  Integer.parseInt(request.getParameter("issueID")));
+			DA.addResolveDetails(Integer.parseInt(request.getParameter("issueID")), request.getParameter("resolvedetails"));
 			request.setAttribute("issues", DA.getAllIssues());
 			dispatchIssues.forward(request, response);
 		}
