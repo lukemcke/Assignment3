@@ -22,7 +22,7 @@
 <h1> Report An Issue </h1>
 <div class="row">
 <div class="col-md-4"
-<form id="reportForm" action="Issue" Method="POST" onsubmit="return validateReport()">
+<form id="reportForm" action="Issue" method="POST" onsubmit="return validateReport()">
 	<div class="form-group">
 	<label for="issueTitle"> Title </label> <br />
 	<input class="form-control" id="txtTitle" type="text" name="issueTitle"> <br />
@@ -72,7 +72,7 @@
 	<br /> <br /> <br />
 	
 	<input id="hidden" name="inputSubCategory" type="hidden" value=""/>
-	<input class="btn btn-default" type="submit" name="report" value="Report Issue"/>
+	<input type="submit" name="report" class="btn btn-default"  value="Report Issue"/>
 	</div>
 </form>
 </div>
