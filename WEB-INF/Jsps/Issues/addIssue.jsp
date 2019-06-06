@@ -8,11 +8,11 @@
 	<head>
 		<title>Report An Issue </title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+				<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-		<script src="${pageContext.request.contextPath}/js/Script.js"></script>
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css" />
+		<script src="${pageContext.request.contextPath}/js/Script.js"></script>
 		
 	</head>
 <body>
@@ -21,8 +21,8 @@
 <div class="container">
 <h1> Report An Issue </h1>
 <div class="row">
-<div class="col-md-4"
-<form id="reportForm" action="Issue" method="POST" onsubmit="return validateReport()">
+<div class="col-md-4">
+<form action="Issue" method="POST" onsubmit="return validateReport()">
 	<div class="form-group">
 	<label for="issueTitle"> Title </label> <br />
 	<input class="form-control" id="txtTitle" type="text" name="issueTitle"> <br />
@@ -71,11 +71,12 @@
 	</select>
 	<br /> <br /> <br />
 	
-	<input id="hidden" name="inputSubCategory" type="hidden" value=""/>
-	<input type="submit" name="report" class="btn btn-default"  value="Report Issue"/>
 	</div>
+	<input id="hidden" name="inputSubCategory" type="hidden" value=""/>
+	<input type="submit" name="report" value="Report Issue"/>
 </form>
 </div>
+
 </div>
 </div>
 <script>
@@ -104,14 +105,12 @@
 			$('#account').toggle();
 			name = $("#account option:first").val();
 		}
-		$('#hidden').val(name)
+		$('#hidden').val(name);
 	});
 	
 	$('.subCat').change(function() {
 		$('#hidden').val(this.value);
 	});
-	
-	
 	
 </script>
 </body>
