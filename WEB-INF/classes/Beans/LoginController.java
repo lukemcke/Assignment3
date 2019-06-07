@@ -19,13 +19,14 @@ public class LoginController extends HttpServlet {
 		RequestDispatcher dispatchLogin = getServletContext().getRequestDispatcher("/WEB-INF/Jsps/Login.jsp");
 	
 		try {
-			
+			//when login button clicked
 		if(request.getParameter("login") != null) {
-			
+				//verify login if the data user is not stored in the database do nothing
 				if(DA.verifyLogin(request.getParameter("email"), request.getParameter("password")))
 				{
 					session.setAttribute("userLogin", DA.getUser(request.getParameter("email")));
 					User user = (User) session.getAttribute("userLogin");
+					//display notifications on index page
 					request.setAttribute("notifications", DA.getNotifications(user.getUserid(), user.getIsadmin()));
 					dispatchIndex.forward(request, response);
 				}

@@ -4,10 +4,10 @@
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">IT Service Portal</a>
+      <a class="navbar-brand" href="Index">IT Service Portal</a>
     </div>
     <ul class="nav navbar-nav">
-      <li class="active"><a href="assignment3">Home</a></li>
+      <li class="active"><a href="Index">Home</a></li>
 	  <c:choose>
 		<c:when test="${sessionScope.userLogin == null || not userLogin.getIsadmin()}">
 			<li><a href="Issue">Report An Issue</a></li>

@@ -9,6 +9,7 @@ import java.util.*;
 public class DataAccess {
 	
 	
+	//returns whether the email and passwrod exists in the record by returning a 1 otherwise return false
 	public static boolean verifyLogin(String Email, String Password) throws Exception {
 		
 		int total = 0;
@@ -27,6 +28,7 @@ public class DataAccess {
 		return total == 1;
 	}
 	
+	//
 	public static List<Issue> getUserIssues(int UserID) throws Exception {
 		String query = "SELECT * FROM Issue WHERE UserID = "+ UserID + "";
 		List<Issue> Issues = new LinkedList<>();
@@ -97,6 +99,7 @@ public class DataAccess {
 		return categories;
 	}
 	
+	//returns specific issue as an object
 	public static Issue getIssue(int IssueID) throws Exception{
 		String query = "SELECT * FROM Issue WHERE IssueID = "+ IssueID + "";
 		Issue issue = new Issue();
@@ -121,7 +124,7 @@ public class DataAccess {
 		}
 			return issue;
 	}
-	
+	//returns all articles as a List of the knowledge object
 	public static List<Knowledge> getAllArticles() throws Exception{
 		String query = "SELECT * FROM KnowledgeBase";
 		List<Knowledge> articles = new LinkedList<>();
@@ -150,35 +153,15 @@ public class DataAccess {
 		return articles;
 	}
 	
-	public static List<Issue> getAllIssues() throws Exception{
+	
+	public List<Issue> getAllIssues() throws Exception{
 		String query = "SELECT * FROM Issue";
-		List<Issue> Issues = new LinkedList<>();
-		try(Connection connection = Config.getConnection();
-		Statement statement = connection.createStatement(); 
-		ResultSet result = statement.executeQuery(query);){ 
-			while(result.next()){ 
-				Issue issue = new Issue();
-
-				issue.setIssueid(result.getInt(1));
-				issue.setTitle(result.getString(2));
-				issue.setDescription(result.getString(3));
-				issue.setDatereported(result.getString(5));
-				issue.setDateresolved(result.getString(6));
-				issue.setStatus(result.getString(7));
-				issue.setCategory(result.getString(8));
-				issue.setSubcategory(result.getString(9));
-				
-				Issues.add(issue);
-				
-			}
-		}
-		catch(SQLException e){
-			System.err.println(e.getMessage());
-			System.err.println(e.getStackTrace());
-		}
+		List<Issue> Issues = addListData(query);
+		
 		return Issues;
 	}
 	
+	//Inserts new issue 
 	public void reportIssue(Issue issue, int UserID) throws Exception {
 		try {
 			
@@ -186,9 +169,11 @@ public class DataAccess {
 			
 			PreparedStatement statement = connection.prepareStatement("INSERT INTO Issue (Title, Description, DateReported, Status, Category, SubCategory, UserID, IsArticle) VALUES (?,?,?,?,?,?,?,?)");
 			
+			//creates current date and time and adds it to date reported
 			long now = System.currentTimeMillis();
 			java.sql.Timestamp timestamp = new java.sql.Timestamp(now);
 			
+			//setting issues from values of the issue parameter
 			statement.setString(1, issue.getTitle());
 			statement.setString(2, issue.getDescription());
 			statement.setTimestamp(3, timestamp);
@@ -212,8 +197,10 @@ public class DataAccess {
 		
 		try {
 			PreparedStatement statement = connection.prepareStatement("INSERT INTO KnowledgeBase (OriginalIssue, Description, ResolveDetails, Category, SubCategory, DateSolved) VALUES (?,?,?,?,?,?)");
+			//changes isArticle to true so it is not displayed in the add article list
 			PreparedStatement changeStatement = connection.prepareStatement("UPDATE Issue SET IsArticle = true WHERE IssueID = " + issue.getIssueid() + "");
 			
+			//setting articles from values of the issue parameter
 			statement.setString(1, issue.getTitle());
 			statement.setString(2, issue.getDescription());
 			statement.setString(3, issue.getResolvedetails());
@@ -233,6 +220,7 @@ public class DataAccess {
 	
 	public List<Issue> searchIssues(boolean isAdmin, int UserID, String keyWord) throws Exception{
 		String query = "";
+		//changes view of issues depending if the user is an admin or not
 		if(isAdmin){
 			query = "SELECT * FROM Issue WHERE Title LIKE '%"+ keyWord + "%' OR Description LIKE '%" + keyWord + "%' OR Category LIKE '%"+ keyWord + "%'";
 		}
@@ -245,6 +233,7 @@ public class DataAccess {
 		return Issues;
 	}
 	
+	//returns list of issues that are completed/resolved
 	public List<Issue> listIssues() throws Exception{
 		String query = "SELECT * FROM Issue WHERE (Status = 'Completed' OR Status = 'Resolved') AND IsArticle = false";
 		
@@ -255,6 +244,7 @@ public class DataAccess {
 	
 	public List<Issue> getNotifications(int UserID, boolean isAdmin) throws Exception {
 		String query = "";
+		//displays notifications issues that are either not accpeted by the user or waiting on user to accept/decline the issue
 		if(isAdmin){
 			query = "SELECT * FROM Issue WHERE Status = 'Not accepted'";
 		}
@@ -326,7 +316,8 @@ public class DataAccess {
 		statement.executeUpdate();
 	}
 	
-	//Comment Methods
+	
+	//add comment using comment created in issueController
 	public void addComment(Comment comment) throws Exception {
 		
 		try {
@@ -346,7 +337,7 @@ public class DataAccess {
 		
 			
 	}
-	
+	//add comment using comment created in articleController
 	public void addArticleComment(ArticleComment comment) throws Exception {
 		
 		try {
@@ -366,7 +357,7 @@ public class DataAccess {
 		
 			
 	}
-	
+	//returns all issues relating to the specific issue
 	public List<Comment> getComments(int IssueID) throws Exception {
 		String query = "SELECT ic.Title, ic.Field FROM IssueComment ic, Issue i WHERE "+ IssueID + " = ic.IssueID AND i.IssueID = "+ IssueID + "";
 		List<Comment> comments = new LinkedList<>();
@@ -389,7 +380,7 @@ public class DataAccess {
 		}
 		return comments;
 	}
-	
+	//returns article comments from the article
 	public List<ArticleComment> getArticleComments(int ArticleID) throws Exception {
 		String query = "SELECT ic.Title, ic.Field FROM ArticleComment ic, KnowledgeBase i WHERE i.ArticleID = ic.ArticleID AND ic.ArticleID = "+ ArticleID + "";
 		List<ArticleComment> comments = new LinkedList<>();
@@ -412,7 +403,7 @@ public class DataAccess {
 		}
 		return comments;
 	}
-	
+	//assort via ascending or decending using drop-down list
 	public static List<Knowledge> sortArticles(String Category) throws Exception{
 		String query =  "SELECT * FROM KnowledgeBase ORDER BY Category LIKE '%" + Category + "%' DESC";
 		List<Knowledge> articles = new LinkedList<>();
@@ -441,6 +432,7 @@ public class DataAccess {
 		return articles;
 	}
 	
+	//returns all articles where the keyword is used in the columns
 	public static List<Knowledge> searchArticles(String keyWord) throws Exception{
 		String query =  "SELECT * FROM KnowledgeBase WHERE OriginalIssue LIKE '%"+ keyWord + "%' OR Description LIKE '%" + keyWord + "%' OR Category LIKE '%"+ keyWord + "%' OR ResolveDetails LIKE '%"+ keyWord + "%'";
 		List<Knowledge> articles = new LinkedList<>();
@@ -469,9 +461,8 @@ public class DataAccess {
 		return articles;
 	}
 	
-
-	//End Comment Methods
 	
+	//used to reduce code by taking query as a parameter where the methods require certain issues
 	public List<Issue> addListData(String query) throws Exception {
 		List<Issue> Issues = new LinkedList<>();
 		try(Connection connection = Config.getConnection();

@@ -19,6 +19,7 @@ public class IssueController extends HttpServlet {
 		
 		HttpSession userSession = request.getSession();
 		
+		//requires user to login before reporting/viewing issues
 		if(userSession.getAttribute("userLogin") == null){
 				RequestDispatcher Login = getServletContext().getRequestDispatcher("/WEB-INF/Jsps/Login.jsp");
 				Login.forward(request, response);
@@ -26,7 +27,7 @@ public class IssueController extends HttpServlet {
 		
 		User user = (User) userSession.getAttribute("userLogin");
 		
-		
+		//adds issue when report is clicked
 		if(request.getParameter("report") != null){
 			addIssue(DA, user, request, response);
 			if(user.getIsadmin()){
@@ -37,25 +38,27 @@ public class IssueController extends HttpServlet {
 			}
 			dispatchIssues.forward(request, response);
 		}
-		
+		//uses the keyword to return list of issues relating to the key word
 		if(request.getParameter("keySearch") != null){
 				request.setAttribute("issues", DA.searchIssues(user.getIsadmin(), user.getUserid(), request.getParameter("search")));
 				request.setAttribute("userissues", DA.searchIssues(user.getIsadmin(), user.getUserid(), request.getParameter("search")));
 				dispatchIssues.forward(request, response);
 			}
-
+		//sort articles decending via Status
 		if(request.getParameter("sortStatus") != null){
 			String Status = request.getParameter("status");
 			request.setAttribute("issues", DA.sortByStatus(user.getIsadmin(), user.getUserid(), Status));
 			request.setAttribute("userissues", DA.sortByStatus(user.getIsadmin(), user.getUserid(), Status));
 			dispatchIssues.forward(request, response);
 		}
+		//sort articles decending via Category
 		if(request.getParameter("sortCat") != null){
 			String category = request.getParameter("category");
 			request.setAttribute("issues", DA.sortByCategory(user.getIsadmin(), user.getUserid(), category));
 			request.setAttribute("userissues", DA.sortByCategory(user.getIsadmin(), user.getUserid(), category));
 			dispatchIssues.forward(request, response);
 		}
+		//sort articles decending via Date
 		if(request.getParameter("sortDate") != null){
 			String date = request.getParameter("date");
 			request.setAttribute("issues", DA.sortByDate(user.getIsadmin(), user.getUserid(), date));
@@ -63,7 +66,7 @@ public class IssueController extends HttpServlet {
 			dispatchIssues.forward(request, response);
 		}
 
-		
+		//when navbar link is clicked send to report issue page.
 		request.setAttribute("categories", DA.getCategories());
 		RequestDispatcher dispather = getServletContext().getRequestDispatcher("/WEB-INF/Jsps/Issues/addIssue.jsp");
 		dispather.forward(request, response);
@@ -77,7 +80,7 @@ public class IssueController extends HttpServlet {
 	throws ServletException, IOException {
 		doGet(request,response);
 	}
-	
+	//Adds issue to database with the userID as the user currently logged in 
 	private void addIssue(DataAccess DA, User user, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		try {
 			String Title = request.getParameter("issueTitle");
@@ -92,6 +95,7 @@ public class IssueController extends HttpServlet {
 			issue.setSubcategory(SubCategory);
 			issue.setUserid(user.getUserid());
 			
+			//adds issue with the argument as as the issue
 			DA.reportIssue(issue, user.getUserid());
 		}
 		catch(Exception ex){

@@ -51,6 +51,7 @@ public class viewIssueController extends HttpServlet {
 
 			dispatchIssue.forward(request, response);
 		}
+		//when user is admin view all issues otherwise only issues relating to them
 		if(user.getIsadmin()){
 				request.setAttribute("issues", DA.getAllIssues());
 			}
@@ -69,6 +70,7 @@ public class viewIssueController extends HttpServlet {
 		doGet(request,response);
 	}
 	
+	//use parameters to create class and add class to database with the argument of Issue
 	private void addIssue(DataAccess DA, User user, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		try {
 			String Title = request.getParameter("issueTitle");
@@ -89,6 +91,7 @@ public class viewIssueController extends HttpServlet {
 			System.err.println(ex.getMessage());
 			}
 		}
+	//adds list of status changes for admin
 	private List<String> getStatusChanges(){
 		List<String> status = new LinkedList<>();
 		status.add("Waiting on third party");
@@ -97,6 +100,7 @@ public class viewIssueController extends HttpServlet {
 		
 		return status;
 	}
+	//add comment to a certain issue
 	private void addComment(DataAccess DA, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 
 		try {

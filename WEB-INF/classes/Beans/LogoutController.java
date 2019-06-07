@@ -15,7 +15,7 @@ public class LogoutController extends HttpServlet {
 	throws ServletException, IOException {
 		
 		HttpSession session = request.getSession();
-		
+		//invalidates the session and returns to home page
 		session.invalidate();
 		RequestDispatcher dispatchIndex = getServletContext().getRequestDispatcher("/WEB-INF/Jsps/Index.jsp");
 		dispatchIndex.forward(request, response);

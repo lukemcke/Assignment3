@@ -13,7 +13,7 @@
 <body>
 	<%@include file="UserMaster.jsp"%>
 	
-	<form action="assignment3" method="POST">
+	<form action="Index" method="POST">
 
 	<c:choose>
 		<c:when test="${empty notifications}">
@@ -59,7 +59,7 @@
 	<div class="container">
 		<h1> IT Service Portal </h1><br />
 		
-		<p> Welcome to IT Service Portal here you can report an issue, view the knowledge base of previous issues and view your own previous issues. </p>
+		<p> Welcome to IT Service Portal here you can report an issue, view the knowledge base of previous issues and view your own issues. </p>
 		
 	</div>
 	<script>

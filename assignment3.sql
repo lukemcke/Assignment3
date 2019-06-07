@@ -1,3 +1,4 @@
+Create Schema assignment3;
 use assignment3;
 
 DROP TABLE IssueComment;
