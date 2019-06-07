@@ -15,3 +15,15 @@ Our system is run using MySQLWorkbench to initialise the local server -
  5. Open the newly created connection
  6. Open the SQL script "assignment3.sql" and run it (this should create the schema and add dummy data)
  7. Open Tomocat and enter the URL above.
+
+Structure : 
+
+Our system is set as an MVC Structure that uses controllers 
+to retrieve/store the data from the JSP's and send it to a DataAccess class
+where it then stores or retrieves data. Therefore the JSP's never directly
+access the jsp files as the controller act as a medium between the two.
+
+Jsps <--> Controller <--> DataAccess
+			^
+			|
+			Classes 
